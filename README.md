@@ -1,7 +1,8 @@
 # Monju
 
 Projeto desenvolvido na disciplina de ARC + TIP 2021.2<br>
-<a href="https://gitpod.io/#github.com/ramolia/Monju-">GitPod Monju</a>
+<a href="https://gitpod.io/#github.com/ramolia/Monju-">GitPod Monju</a> <br>
+<img src="gif/black_hole.gif"> 
 
 # Início
 
