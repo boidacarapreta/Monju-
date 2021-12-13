@@ -32,6 +32,7 @@ var config = {
     }
 };
 
+var player2
 var player;
 var stars;
 var bombs;
@@ -50,6 +51,8 @@ function preload ()
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet("alien2", "assets/alien2.png",{frameWidth: 32, frameHeight: 48});
+
 }
 
 function create ()
@@ -71,6 +74,7 @@ function create ()
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
+    player2 = this.physics.add.sprite(100, 800, "alien2");
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
