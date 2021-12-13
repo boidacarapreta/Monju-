@@ -1,0 +1,56 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Making your first Phaser 3 Game - Part 10</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var config = {
+
+    /// Configurações do tamanho da tela
+    type: Phaser.AUTO,
+    width: 1000,
+    height: 650,
+    
+    physics: {
+        default: 'arcade',
+        arcade: {
+
+            /// Valor da Gravidade
+            gravity: { y: 300 },
+            debug: false
+        }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
+
+var player2;
+var player;
+var button;
+var spyke;
+var platforms;
+var gameOver = false;
+
+var game = new Phaser.Game(config);
+{
+    this.load.image('background', 'assets/fundo.png');
+    this.load.image('ground', 'assets/platform.png');
+    this.load.image('button', 'assets/button.png');
+    this.load.image('spyke', 'assets/spyke.png');
+    this.load.spritesheet('alien1', 'assets/alien1.png', { frameWidth: 16, frameHeight: 24});
+    this.load.spritesheet("alien2", "assets/alien2.png",{frameWidth: 16, frameHeight: 24});
+
+}
