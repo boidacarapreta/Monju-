@@ -45,12 +45,109 @@ var platforms;
 var gameOver = false;
 
 var game = new Phaser.Game(config);
+
+function preload ()
 {
     this.load.image('background', 'assets/fundo.png');
-    this.load.image('ground', 'assets/platform.png');
+    this.load.image('ground', 'assets/meio.png');
     this.load.image('button', 'assets/button.png');
-    this.load.image('spyke', 'assets/spyke.png');
-    this.load.spritesheet('alien1', 'assets/alien1.png', { frameWidth: 16, frameHeight: 24});
-    this.load.spritesheet("alien2", "assets/alien2.png",{frameWidth: 16, frameHeight: 24});
+    this.load.image('spyke', 'assets/spykes.png');
+    this.load.spritesheet('alienv', 'assets/alienvd.png', { frameWidth: 32, frameHeight: 48});
+    this.load.spritesheet('alienr', "assets/alienre.png",{frameWidth: 32, frameHeight: 48});
+
+    /// Colocar o sprite sheet em uma imagem completa. 
 
 }
+
+
+function create ()
+{
+    //  A simple background for our game
+    this.add.image(500, 325, 'background');
+
+    //  The platforms group contains the ground and the 2 ledges we can jump on
+    platforms = this.physics.add.staticGroup();
+
+    //  Here we create the ground.
+    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+    platforms.create(500, 325, 'ground').setScale(1).refreshBody();
+
+    ///  Plataforma com tamanho original. \/
+    ///platforms.create(600, 400, 'ground');
+    
+    // The player and its settings
+    player = this.physics.add.sprite(100, 330, 'alienv', 'alienr');
+    
+    //  Player physics properties. Give the little guy a slight bounce.
+    player.setBounce(0.2);
+    player.setCollideWorldBounds(true);
+
+    //  Our player animations, turning, walking left and walking right.
+    this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('alienr', { start: 0, end: 8 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    /*this.anims.create({
+        key: 'turn',
+        frames: [ { key: 'dude', frame: 4 } ],
+        frameRate: 20
+    });
+    */
+
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('alienv', { start: 0, end: 8 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    //  Input Events
+    cursors = this.input.keyboard.createCursorKeys();
+
+    //  Collide the player and the stars with the platforms
+    this.physics.add.collider(player, platforms);
+    
+    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
+}
+
+function update ()
+{
+    if (gameOver)
+    {
+        return;
+    }
+
+    if (cursors.left.isDown)
+    {
+        player.setVelocityX(-160);
+
+        player.anims.play('left', true);
+    }
+    else if (cursors.right.isDown)
+    {
+        player.setVelocityX(160);
+
+        player.anims.play('right', true);
+    }
+   
+   /* else
+    {
+        player.setVelocityX(0);
+
+        player.anims.play('turn');
+    }
+    */
+
+    if (cursors.up.isDown && player.body.touching.down)
+    {
+        player.setVelocityY(-330);
+    }
+}
+
+</script>
+
+</body>
+</html>
