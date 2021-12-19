@@ -70,13 +70,13 @@ function create ()
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    platforms.create(500, 325, 'ground').setScale(1).refreshBody();
+    platforms.create(500, 325, 'ground').setScale(1.2).refreshBody();
 
     ///  Plataforma com tamanho original. \/
-    ///platforms.create(600, 400, 'ground');
+    platforms.create(500, 200, 'ground').setScale(0.35).refreshBody();
     
     // The player and its settings
-    player = this.physics.add.sprite(100, 330, 'alienv', 'alienr');
+    player = this.physics.add.sprite(100, 130, 'alienv', 'alienr');
     
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -86,7 +86,7 @@ function create ()
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('alienr', { start: 0, end: 8 }),
-        frameRate: 10,
+        frameRate: 100,
         repeat: -1
     });
 
@@ -133,13 +133,13 @@ function update ()
         player.anims.play('right', true);
     }
    
-   /* else
+    else
     {
         player.setVelocityX(0);
 
-        player.anims.play('turn');
+        player.anims.play('right');
     }
-    */
+   
 
     if (cursors.up.isDown && player.body.touching.down)
     {
