@@ -150,37 +150,14 @@ function update ()
     {
         player.setVelocityX(-160);
         player.anims.play('left', true);
+        player2.setVelocityX(-160);
+        player2.anims.play('left2', true);
 
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
         player.anims.play('right', true);
-
-    }
-   
-    else
-    {
-        player.setVelocityX(0);
-        player.anims.play('right');
-
-    }
-
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.setVelocityY(-260);
-
-    }
-
-    /// WASD
-    if (left.isDown)
-    {
-        player2.setVelocityX(-160);
-        player2.anims.play('left2', true);
-
-    }
-    else if (right.isDown)
-    {
         player2.setVelocityX(160);
         player2.anims.play('right2', true);
 
@@ -188,6 +165,8 @@ function update ()
    
     else
     {
+        player.setVelocityX(0);
+        player.anims.play('right');
         player2.setVelocityX(0);
         player2.anims.play('right2');
 
@@ -196,6 +175,7 @@ function update ()
     if (up.isDown && player2.body.touching.down)
     {
         player2.setVelocityY(-260);
+        player.setVelocityY(-260);
 
     };
 
