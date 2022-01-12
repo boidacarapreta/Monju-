@@ -88,20 +88,20 @@ function create ()
     spikes.create(100,10,'spikeb').setScale(0.2).refreshBody() && spikes.create(270,10,'spikeb').setScale(0.2).refreshBody() && spikes.create(470,10,'spikeb').setScale(0.2).refreshBody() && spikes.create(680,10,'spikeb').setScale(0.2).refreshBody() && spikes.create(888,10,'spikeb').setScale(0.2).refreshBody();
     ///Cima 2
     spikes.create(100,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(270,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(470,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(680,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(888,360,'spikeb').setScale(0.2).refreshBody();
-    
     //Laterais 1
     spikes.create(09,110,'spiked').setScale(0.2).refreshBody();
     spikes.create(989.9,110,'spikese').setScale(0.2).refreshBody();
-
     //Laterais 2
     spikes.create(09,460,'spiked').setScale(0.2).refreshBody();
     spikes.create(989.9,460,'spikese').setScale(0.2).refreshBody();
-
     //Meio 1
     spikes.create(200,230,'spikesl').setScale(0.24).refreshBody() && spikes.create(390,230,'spikesl').setScale(0.24).refreshBody() && spikes.create(580,230,'spikesl').setScale(0.24).refreshBody() && spikes.create(770,230,'spikesl').setScale(0.24).refreshBody() && spikes.create(800,230,'spikesl').setScale(0.24).refreshBody();
-
     //Meio 2
     spikes.create(200,575,'spikesl').setScale(0.24).refreshBody() && spikes.create(390,575,'spikesl').setScale(0.24).refreshBody() && spikes.create(580,575,'spikesl').setScale(0.24).refreshBody() && spikes.create(770,575,'spikesl').setScale(0.24).refreshBody() && spikes.create(800,575,'spikesl').setScale(0.24).refreshBody();
+    //Colunas 1
+    spikes.create(300,45,'spikesc').setScale(0.22).refreshBody() && spikes.create(300,95,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,45,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,95,'spikesc').setScale(0.22).refreshBody();
+    //Colunas 2
+    spikes.create(300,395,'spikesc').setScale(0.22).refreshBody() && spikes.create(300,450,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,395,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,450,'spikesc').setScale(0.22).refreshBody();
 
     // The player and its settings
     player = this.physics.add.sprite(35, 265, 'alienvd', 'alienve');
@@ -170,13 +170,13 @@ function update ()
     ///Setas
     if (cursors.left.isDown)
     {
-        player.setVelocityX(-100);
+        player.setVelocityX(-10);
         player.anims.play('left', true);
 
     }
     else if (cursors.right.isDown)
     {
-        player.setVelocityX(100);
+        player.setVelocityX(10);
         player.anims.play('right', true);
 
     }
@@ -190,7 +190,14 @@ function update ()
 
     if (cursors.up.isDown)
     {
-        player.setVelocityY(-100);
+        player.setVelocityY(-60);
+
+    }
+
+    if (cursors.up.isDown && cursors.right.isDown)
+    {
+        player.setVelocityY(-60);
+        player.setVelocityX(300);
 
     }
 
@@ -223,7 +230,7 @@ function update ()
     
     if (up.isDown && right.isDown)
     {
-        player2.setVelocityY(-260);
+        player2.setVelocityY(-60);
         player2.setVelocityX(300);
 
     };
