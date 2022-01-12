@@ -55,7 +55,10 @@ function preload ()
     this.load.image('background', 'assets/fundo.png');
     this.load.image('ground', 'assets/meio.png');
     this.load.image('button', 'assets/button.png');
-    this.load.image('spike', 'assets/spykes.png');
+    //this.load.image('spike', 'assets/spykes.png');
+    this.load.image('spikeb', 'assets/spykesb.png');
+    this.load.image('spiked', 'assets/spykesd.png');
+    this.load.image('spikese', 'assets/spykesd.png');
     this.load.spritesheet('alienvd', 'assets/alienvd.png', { frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('alienve', "assets/alienve.png",{frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('alienrd', 'assets/alienrd.png', { frameWidth: 32, frameHeight: 48});
@@ -76,10 +79,17 @@ function create ()
     spikes = this.physics.add.staticGroup();
 
     platforms.create(500, 325, 'ground').setScale(1.2).refreshBody();
-    spikes.create(500,185,'spike').setScale(0.2).refreshBody();
+    //spikes.create(500,10,'spike').setScale(0.2).refreshBody();
     platforms.create(500, 200, 'ground').setScale(0.35).refreshBody();
     platforms.create(500, 672, 'ground').setScale(1.2).refreshBody();
     
+    ///Cima 1
+    spikes.create(100,10,'spikeb').setScale(0.2).refreshBody() && spikes.create(270,10,'spikeb').setScale(0.2).refreshBody() && spikes.create(470,10,'spikeb').setScale(0.2).refreshBody() && spikes.create(680,10,'spikeb').setScale(0.2).refreshBody() && spikes.create(888,10,'spikeb').setScale(0.2).refreshBody();
+    ///Cima 2
+    spikes.create(100,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(270,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(470,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(680,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(888,360,'spikeb').setScale(0.2).refreshBody();
+    
+    spikes.create(09,110,'spiked').setScale(0.2).refreshBody();
+    spikes.create(950,110,'spikese').setScale(0.2).refreshBody();
 
     // The player and its settings
     player = this.physics.add.sprite(100, 130, 'alienvd', 'alienve');
