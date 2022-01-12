@@ -66,6 +66,7 @@ function preload ()
     this.load.spritesheet('alienrd', 'assets/alienrd.png', { frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('alienre', "assets/alienre.png",{frameWidth: 32, frameHeight: 48});
 
+    this.load.image('restart', 'assets/restart.png');
     /// Colocar o sprite sheet em uma imagem completa. 
 
 }
@@ -101,7 +102,7 @@ function create ()
     //Colunas 1
     spikes.create(300,45,'spikesc').setScale(0.22).refreshBody() && spikes.create(300,95,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,45,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,95,'spikesc').setScale(0.22).refreshBody();
     //Colunas 2
-    spikes.create(300,395,'spikesc').setScale(0.22).refreshBody() && spikes.create(300,450,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,395,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,450,'spikesc').setScale(0.22).refreshBody();
+    spikes.create(300,395,'spikesc').setScale(0.22).refreshBody() && spikes.create(300,440,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,395,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,440,'spikesc').setScale(0.22).refreshBody();
 
     // The player and its settings
     player = this.physics.add.sprite(35, 265, 'alienvd', 'alienve');
@@ -163,7 +164,15 @@ function update ()
 {
     if (gameOver)
     {
-        return;
+    this.physics.pause();
+
+    player.setTint(0xff0000);
+    player.anims.play(right);
+    player2.setTint(0xff0000);
+    player2.anims.play('right2');
+
+    return;
+    
     }
 
 
@@ -240,12 +249,6 @@ function update ()
 
 function hitSpike (player, spikes)
 {
-    this.physics.pause();
-
-    player.setTint(0xff0000);
-    player.anims.play(right);
-    player2.setTint(0xff0000);
-    player2.anims.play('right2');
     gameOver = true;
 
 }
