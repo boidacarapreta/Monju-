@@ -59,6 +59,8 @@ function preload ()
     this.load.image('spikeb', 'assets/spykesb.png');
     this.load.image('spiked', 'assets/spykesd.png');
     this.load.image('spikese', 'assets/spykese.png');
+    this.load.image('spikesc', 'assets/spykesc.png');
+    this.load.image('spikesl', 'assets/spykesl.png');
     this.load.spritesheet('alienvd', 'assets/alienvd.png', { frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('alienve', "assets/alienve.png",{frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('alienrd', 'assets/alienrd.png', { frameWidth: 32, frameHeight: 48});
@@ -87,12 +89,23 @@ function create ()
     ///Cima 2
     spikes.create(100,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(270,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(470,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(680,360,'spikeb').setScale(0.2).refreshBody() && spikes.create(888,360,'spikeb').setScale(0.2).refreshBody();
     
+    //Laterais 1
     spikes.create(09,110,'spiked').setScale(0.2).refreshBody();
     spikes.create(989.9,110,'spikese').setScale(0.2).refreshBody();
 
+    //Laterais 2
+    spikes.create(09,460,'spiked').setScale(0.2).refreshBody();
+    spikes.create(989.9,460,'spikese').setScale(0.2).refreshBody();
+
+    //Meio 1
+    spikes.create(200,230,'spikesl').setScale(0.24).refreshBody() && spikes.create(390,230,'spikesl').setScale(0.24).refreshBody() && spikes.create(580,230,'spikesl').setScale(0.24).refreshBody() && spikes.create(770,230,'spikesl').setScale(0.24).refreshBody() && spikes.create(800,230,'spikesl').setScale(0.24).refreshBody();
+
+    //Meio 2
+    spikes.create(200,575,'spikesl').setScale(0.24).refreshBody() && spikes.create(390,575,'spikesl').setScale(0.24).refreshBody() && spikes.create(580,575,'spikesl').setScale(0.24).refreshBody() && spikes.create(770,575,'spikesl').setScale(0.24).refreshBody() && spikes.create(800,575,'spikesl').setScale(0.24).refreshBody();
+
     // The player and its settings
-    player = this.physics.add.sprite(100, 130, 'alienvd', 'alienve');
-    player2 = this.physics.add.sprite(100, 530, 'alienrd', 'alienre');
+    player = this.physics.add.sprite(35, 265, 'alienvd', 'alienve');
+    player2 = this.physics.add.sprite(35, 610, 'alienrd', 'alienre');
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
