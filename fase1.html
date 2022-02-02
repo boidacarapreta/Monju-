@@ -39,6 +39,9 @@ var config = {
 
 var player;
 var player2;
+var che1 = false;
+var che2 = false;
+var death;
 var botao;
 var ativar = false;
 var desativar;
@@ -58,11 +61,13 @@ function preload ()
     this.load.image('background', 'assets/fundo.png');
     this.load.image('ground', 'assets/meio.png');
     this.load.image('spike', 'assets/spykes.png');
+    this.load.image('chegada', 'assets/chegada.png');
     this.load.spritesheet('alienvd', 'assets/alienvd.png', {frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('alienve', "assets/alienve.png", {frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('alienrd', "assets/alienrd.png", {frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('alienre', "assets/alienre.png", {frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('button', "assets/button.png", {frameWidth: 36, frameHeight: 18});
+    this.load.audio('death', 'assets/death.mp3');
 
     /// Colocar o sprite sheet em uma imagem completa. 
 
@@ -73,15 +78,20 @@ function create ()
 {
     //  A simple background for our game
     this.add.image(500, 325, 'background');
+    death = this.sound.add("death");
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
     spikes = this.physics.add.staticGroup();
+    chegada = this.physics.add.staticGroup(); 
 
     platforms.create(500, 325, 'ground').setScale(1.2).refreshBody();
     spikes.create(500,185,'spike').setScale(0.2).refreshBody();
     platforms.create(500, 200, 'ground').setScale(0.35).refreshBody();
     platforms.create(500, 672, 'ground').setScale(1.2).refreshBody();
+
+    chegada.create(940,269, 'chegada').refreshBody();
+    chegada.create(940,615, 'chegada').refreshBody();
 
     // The player and its settings
     player = this.physics.add.sprite(100, 130, 'alienvd', 'alienve');
@@ -153,6 +163,8 @@ function create ()
     this.physics.add.collider(player, spikes, hitSpike, null, this);
     this.physics.add.collider(player2, spikes, hitSpike, null, this);
     this.physics.add.collider(player, button, hitButton, null, this);
+    this.physics.add.overlap(player, chegada, hitChegada, null, this);
+    this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
     
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
 }
@@ -161,6 +173,7 @@ function update ()
 {
     if (gameOver)
     {
+
         return;
     }
 
@@ -225,6 +238,7 @@ function update ()
 function hitSpike (player, spikes)
 {
     this.physics.pause();
+    death.play();
 
     player.setTint(0xff0000);
     player.anims.play(right);
@@ -250,6 +264,25 @@ function hitButton (player, button)
     };
 
 }
+
+function hitChegada (player, chegada)
+{
+    che1 = true;
+}
+
+function hitChegada2 (player2, chegada)
+{
+    che2 = true;
+}
+
+function prox ()
+{
+    if(che1==che2==true)
+    {
+        gameOver = true;
+    };
+}
+
 
 </script>
 
