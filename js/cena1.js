@@ -197,10 +197,4 @@ function hitChegada2(player2, chegada) {
   che2 = true;
 }
 
-function prox() {
-  if ((che1 == che2) == true) {
-    gameOver = true;
-  }
-}
-
 export { cena1 };
