@@ -1,20 +1,5 @@
-var config = {
-    type: Phaser.AUTO,
-    width: 1000,
-    height: 650,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 300 },
-            debug: false
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-};
+import { cena2 } from "./cena2.js";
+var cena1 = new Phaser.Scene("Cena 1");
 
 var player;
 var player2;
@@ -32,8 +17,6 @@ var button;
 var spyke;
 var platforms;
 var gameOver = false;
-
-var game = new Phaser.Game(config);
 
 function preload ()
 {
@@ -249,3 +232,5 @@ function prox ()
         gameOver = true;
     };
 }
+
+export { cena1 };

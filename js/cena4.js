@@ -1,22 +1,5 @@
-var config = {
-    type: Phaser.AUTO,
-    width: 1000,
-    height: 650,
-    
-    physics: {
-        default: 'arcade',
-        arcade:
-        {
-            gravity: { y: 300 },
-            debug: false
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-};
+import { cena5 } from "./cena5.js";
+var cena4 = new Phaser.Scene("Cena 4");
 
 var player;
 var player2;
@@ -30,8 +13,6 @@ var platforms;
 var gameOver = false;
 var k1 = false;
 var k2 = false;
-
-var game = new Phaser.Game(config);
 
 function preload ()
 {
@@ -246,3 +227,5 @@ function hitSpike (player, spikes)
     gameOver = true;
 
 }
+
+export { cena4 };
