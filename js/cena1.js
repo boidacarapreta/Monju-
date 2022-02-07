@@ -6,7 +6,7 @@ var player2;
 var che1 = false;
 var che2 = false;
 var death;
-var botao;
+var teclaf;
 var ativar = false;
 var desativar;
 var up;
@@ -118,7 +118,7 @@ cena1.create = function () {
   down = this.input.keyboard.addKey("S");
   left = this.input.keyboard.addKey("A");
   right = this.input.keyboard.addKey("D");
-  botao = this.input.keyboard.addKey("F");
+  teclaf = this.input.keyboard.addKey("F");
 
   this.physics.add.collider(player, platforms);
   this.physics.add.collider(player2, platforms);
@@ -179,10 +179,10 @@ function hitSpike(player, spikes) {
 }
 
 function hitButton(player, button) {
-  if (botao.isDown && ativar == false) {
+  if (teclaf.isDown && ativar == false) {
     button.anims.play("on");
     ativar = true;
-  } else if (botao.isDown && ativar == true) {
+  } else if (teclaf.isDown && ativar == true) {
     button.anims.play("off");
     ativar = false;
     platforms.create(500, 100, "ground").setScale(1.2).refreshBody();

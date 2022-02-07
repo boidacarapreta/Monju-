@@ -3,6 +3,9 @@ var cena4 = new Phaser.Scene("Cena 4");
 
 var player;
 var player2;
+var che1 = false;
+var che2 = false;
+var death;
 var up;
 var down;
 var left;
@@ -23,6 +26,7 @@ cena4.preload = function () {
   this.load.image("spikese", "assets/spykese.png");
   this.load.image("spikesc", "assets/spykesc.png");
   this.load.image("spikesl", "assets/spykesl.png");
+  this.load.image("chegada", "assets/chegada.png");
   this.load.image("key", "assets/key.png");
   this.load.spritesheet("alienvd", "assets/alienvd.png", {
     frameWidth: 32,
@@ -41,13 +45,18 @@ cena4.preload = function () {
     frameHeight: 48,
   });
 
+  this.load.audio("death", "assets/death.mp3");
+
   this.load.image("restart", "assets/restart.png");
 };
 
 cena4.create = function () {
   this.add.image(500, 325, "background");
+  death = this.sound.add("death");
+
   platforms = this.physics.add.staticGroup();
   spikes = this.physics.add.staticGroup();
+  chegada = this.physics.add.staticGroup();
   key = this.physics.add.staticGroup();
   key2 = this.physics.add.staticGroup();
 
@@ -97,6 +106,9 @@ cena4.create = function () {
 
   key.create(35, 200, "key");
   key2.create(35, 550, "key");
+
+  chegada.create(940, 269, "chegada").refreshBody();
+  chegada.create(940, 615, "chegada").refreshBody();
 
   player = this.physics.add.sprite(35, 265, "alienvd", "alienve");
   player2 = this.physics.add.sprite(35, 610, "alienrd", "alienre");
@@ -221,7 +233,28 @@ function hitKey2(player2, key2) {
 }
 
 function hitSpike(player, spikes) {
+  this.physics.pause();
+  death.play();
+
+  player.setTint(0xff0000);
+  player.anims.play(right);
+  player2.setTint(0xff0000);
+  player2.anims.play("right2");
   gameOver = true;
+}
+
+function hitChegada(player, chegada) {
+  che1 = true;
+}
+
+function hitChegada2(player2, chegada) {
+  che2 = true;
+}
+
+function prox() {
+  if ((che1 == che2) == true) {
+    gameOver = true;
+  }
 }
 
 export { cena4 };

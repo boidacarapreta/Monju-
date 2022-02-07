@@ -242,3 +242,5 @@ function restart() {
     this
   );
 }
+
+export { cena2 };

@@ -3,6 +3,9 @@ var cena3 = new Phaser.Scene("Cena 3");
 
 var player;
 var player2;
+var che1 = false;
+var che2 = false;
+var death;
 var up;
 var down;
 var left;
@@ -24,6 +27,7 @@ cena3.preload = function () {
   this.load.image("spikese", "assets/spykese.png");
   this.load.image("spikesc", "assets/spykesc.png");
   this.load.image("spikesl", "assets/spykesl.png");
+  this.load.image("chegada", "assets/chegada.png");
   this.load.spritesheet("alienvd", "assets/alienvd.png", {
     frameWidth: 32,
     frameHeight: 48,
@@ -41,14 +45,18 @@ cena3.preload = function () {
     frameHeight: 48,
   });
 
+  this.load.audio("death", "assets/death.mp3");
+
   this.load.image("restart", "assets/restart.png");
 };
 
 cena3.create = function () {
   this.add.image(500, 325, "background");
+  death = this.sound.add("death");
 
   platforms = this.physics.add.staticGroup();
   spikes = this.physics.add.staticGroup();
+  chegada = this.physics.add.staticGroup();
 
   platforms.create(500, 325, "ground").setScale(1.2).refreshBody();
   platforms.create(500, 672, "ground").setScale(1.2).refreshBody();
@@ -71,6 +79,9 @@ cena3.create = function () {
 
   spikes.create(500, 185, "spikes").setScale(0.28).refreshBody() &&
     spikes.create(500, 528, "spikes").setScale(0.28).refreshBody();
+
+  chegada.create(940, 269, "chegada").refreshBody();
+  chegada.create(940, 615, "chegada").refreshBody();
 
   player = this.physics.add.sprite(100, 130, "alienvd", "alienve");
   player2 = this.physics.add.sprite(100, 530, "alienrd", "alienre");
@@ -118,6 +129,8 @@ cena3.create = function () {
   this.physics.add.collider(player2, platforms);
   this.physics.add.collider(player, spikes, hitSpike, null, this);
   this.physics.add.collider(player2, spikes, hitSpike, null, this);
+  this.physics.add.overlap(player, chegada, hitChegada, null, this);
+  this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
 };
 
 cena3.update = function () {
@@ -157,7 +170,28 @@ cena3.update = function () {
 };
 
 function hitSpike(player, spikes) {
+  this.physics.pause();
+  death.play();
+
+  player.setTint(0xff0000);
+  player.anims.play(right);
+  player2.setTint(0xff0000);
+  player2.anims.play("right2");
   gameOver = true;
+}
+
+function hitChegada(player, chegada) {
+  che1 = true;
+}
+
+function hitChegada2(player2, chegada) {
+  che2 = true;
+}
+
+function prox() {
+  if ((che1 == che2) == true) {
+    gameOver = true;
+  }
 }
 
 export { cena3 };
