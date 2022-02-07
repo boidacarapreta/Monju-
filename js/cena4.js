@@ -214,9 +214,8 @@ cena4.update = function () {
     player2.setVelocityX(300);
   }
 
-  //Habilitar passar de fase Porraaaaaaa
-  if (k1 == true && k2 == true) {
-    gameOver = true;
+  if (k1 == true && k2 == true && che1 == true && che2 == true) {
+    restart.call(this);
   }
 };
 

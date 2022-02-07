@@ -165,6 +165,10 @@ cena1.update = function () {
   if (up.isDown && player2.body.touching.down) {
     player2.setVelocityY(-260);
   }
+  
+  if (che1 == true && che2 == true) {
+    restart.call(this);
+  }
 };
 
 function hitSpike(player, spikes) {

@@ -167,6 +167,10 @@ cena3.update = function () {
     player2.setVelocityY(-200);
     player.setVelocityY(-240);
   }
+
+  if (che1 == true && che2 == true) {
+    restart.call(this);
+  }
 };
 
 function hitSpike(player, spikes) {
