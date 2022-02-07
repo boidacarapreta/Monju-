@@ -169,7 +169,7 @@ cena3.update = function () {
   }
 
   if (che1 == true && che2 == true) {
-    restart.call(this);
+    this.scene.start(cena4);
   }
 };
 

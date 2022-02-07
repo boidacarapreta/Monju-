@@ -215,7 +215,7 @@ cena4.update = function () {
   }
 
   if (k1 == true && k2 == true && che1 == true && che2 == true) {
-    restart.call(this);
+    this.scene.start(cena5);
   }
 };
 
