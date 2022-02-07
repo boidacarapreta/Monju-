@@ -3,4 +3,4 @@ tasks:
 vscode:
   extensions:
     - eamodio.gitlens@10.2.1
-    - esbenp.prettier-vscode@5.8.0
+    - esbenp.prettier-vscode@9.2.0
