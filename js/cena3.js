@@ -1,16 +1,13 @@
 
 var config = {
-
-    /// Configurações do tamanho da tela
     type: Phaser.AUTO,
     width: 1000,
     height: 650,
-    
-    physics: {
+    physics:
+    {
         default: 'arcade',
-        arcade: {
-
-            /// Valor da Gravidade
+        arcade:
+        {
             gravity: { y: 300 },
             debug: false
         }
@@ -54,17 +51,14 @@ function preload ()
     this.load.spritesheet('alienre', "assets/alienre.png",{frameWidth: 32, frameHeight: 48});
 
     this.load.image('restart', 'assets/restart.png');
-    /// Colocar o sprite sheet em uma imagem completa. 
 
 }
 
 
 function create ()
 {
-    //  A simple background for our game
     this.add.image(500, 325, 'background');
 
-    //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
     spikes = this.physics.add.staticGroup();
 
@@ -81,20 +75,17 @@ function create ()
 
     platforms.create(700,251, 'escadav').setScale(1).refreshBody() && platforms.create(700,600, 'escadav').setScale(1).refreshBody();
 
-    //Espinhos
+ 
     spikes.create(500,185,'spikes').setScale(0.28).refreshBody() && spikes.create(500,528,'spikes').setScale(0.28).refreshBody();
 
-    // The player and its settings
     player = this.physics.add.sprite(100, 130, 'alienvd', 'alienve');
     player2 = this.physics.add.sprite(100, 530, 'alienrd', 'alienre');
 
-    //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player2.setBounce(0.2);
     player2.setCollideWorldBounds(true);
 
-    //  Our player animations, turning, walking left and walking right.
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('alienve', { start: 0, end: 8 }),
@@ -123,21 +114,16 @@ function create ()
         repeat: -1
     });
 
-    //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
-
     up = this.input.keyboard.addKey("W");
     down = this.input.keyboard.addKey("S"); 
     left = this.input.keyboard.addKey("A");
     right = this.input.keyboard.addKey("D");
 
-    //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player2, platforms);
     this.physics.add.collider(player, spikes, hitSpike, null, this);
     this.physics.add.collider(player2, spikes, hitSpike, null, this);
-    
-    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
 }
 
 function update ()

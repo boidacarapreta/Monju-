@@ -1,15 +1,12 @@
 var config = {
-
-    /// Configurações do tamanho da tela
     type: Phaser.AUTO,
     width: 1000,
     height: 650,
     
     physics: {
         default: 'arcade',
-        arcade: {
-
-            /// Valor da Gravidade
+        arcade:
+        {
             gravity: { y: 300 },
             debug: false
         }
@@ -41,7 +38,6 @@ function preload ()
     this.load.image('background', 'assets/fundo.png');
     this.load.image('ground', 'assets/meio.png');
     this.load.image('button', 'assets/button.png');
-    //this.load.image('spike', 'assets/spykes.png');
     this.load.image('spikeb', 'assets/spykesb.png');
     this.load.image('spiked', 'assets/spykesd.png');
     this.load.image('spikese', 'assets/spykese.png');
@@ -53,25 +49,20 @@ function preload ()
     this.load.spritesheet('alienrd', 'assets/alienrd.png', { frameWidth: 32, frameHeight: 48});
     this.load.spritesheet('alienre', "assets/alienre.png",{frameWidth: 32, frameHeight: 48});
 
-    this.load.image('restart', 'assets/restart.png');
-    /// Colocar o sprite sheet em uma imagem completa. 
+    this.load.image('restart', 'assets/restart.png'); 
 
 }
 
 
 function create ()
 {
-    //  A simple background for our game
     this.add.image(500, 325, 'background');
-
-    //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
     spikes = this.physics.add.staticGroup();
     key = this.physics.add.staticGroup();
     key2 = this.physics.add.staticGroup();
 
     platforms.create(500, 325, 'ground').setScale(1.2).refreshBody();
-    //platforms.create(500, 200, 'ground').setScale(0.35).refreshBody();
     platforms.create(500, 672, 'ground').setScale(1.2).refreshBody();
     
     ///Cima 1
@@ -93,21 +84,17 @@ function create ()
     //Colunas 2
     spikes.create(300,395,'spikesc').setScale(0.22).refreshBody() && spikes.create(300,440,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,395,'spikesc').setScale(0.22).refreshBody() && spikes.create(750,440,'spikesc').setScale(0.22).refreshBody();
 
-    //Key
     key.create(35,200, 'key');
     key2.create(35,550, 'key');
 
-    // The player and its settings
     player = this.physics.add.sprite(35, 265, 'alienvd', 'alienve');
     player2 = this.physics.add.sprite(35, 610, 'alienrd', 'alienre');
 
-    //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player2.setBounce(0.2);
     player2.setCollideWorldBounds(true);
 
-    //  Our player animations, turning, walking left and walking right.
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('alienve', { start: 0, end: 8 }),
@@ -136,22 +123,18 @@ function create ()
         repeat: -1
     });
 
-    //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
-
     up = this.input.keyboard.addKey("W");
     down = this.input.keyboard.addKey("S"); 
     left = this.input.keyboard.addKey("A");
     right = this.input.keyboard.addKey("D");
 
-    //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player2, platforms);
     this.physics.add.collider(player, spikes, hitSpike, null, this);
     this.physics.add.collider(player2, spikes, hitSpike, null, this);
     this.physics.add.overlap(player, key, hitKey, null, this);
     this.physics.add.overlap(player2, key2, hitKey2, null, this);
-    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
 }
 
 function update ()
