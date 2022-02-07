@@ -14,7 +14,7 @@ var gameOver = false;
 var k1 = false;
 var k2 = false;
 
-function preload ()
+cena4.preload = function()
 {
     this.load.image('background', 'assets/fundo.png');
     this.load.image('ground', 'assets/meio.png');
@@ -35,7 +35,7 @@ function preload ()
 }
 
 
-function create ()
+cena4.create = function()
 {
     this.add.image(500, 325, 'background');
     platforms = this.physics.add.staticGroup();
@@ -118,7 +118,7 @@ function create ()
     this.physics.add.overlap(player2, key2, hitKey2, null, this);
 }
 
-function update ()
+cena4.update = function()
 {
     if (gameOver)
     {

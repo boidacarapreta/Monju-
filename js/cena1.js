@@ -18,7 +18,7 @@ var spyke;
 var platforms;
 var gameOver = false;
 
-function preload ()
+cena1.preload = function ()
 {
     this.load.image('background', 'assets/fundo.png');
     this.load.image('ground', 'assets/meio.png');
@@ -34,7 +34,7 @@ function preload ()
 }
 
 
-function create ()
+cena1.create = function()
 {
     this.add.image(500, 325, 'background');
     death = this.sound.add("death");
@@ -120,7 +120,7 @@ function create ()
     this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
 }
 
-function update ()
+cena1.update = function()
 {
     if (gameOver)
     {

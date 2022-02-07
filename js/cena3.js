@@ -12,7 +12,7 @@ var spyke;
 var platforms;
 var gameOver = false;
 
-function preload ()
+cena3.preload = function()
 {
     this.load.image('background', 'assets/fundo.png');
     this.load.image('ground', 'assets/meio.png');
@@ -35,7 +35,7 @@ function preload ()
 }
 
 
-function create ()
+cena3.create = function ()
 {
     this.add.image(500, 325, 'background');
 
@@ -106,7 +106,7 @@ function create ()
     this.physics.add.collider(player2, spikes, hitSpike, null, this);
 }
 
-function update ()
+cena3.update = function()
 {
     if (gameOver)
     {
