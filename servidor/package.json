@@ -1,0 +1,33 @@
+{
+    "author": "Ramon && Julia",
+    "bugs": {
+        "url": "https://github.com/ramolia/Monju-/issues"
+    },
+    "dependencies": {
+        "express": "^4.17.2",
+        "socket.io": "^4.1.1"
+    },
+    "description": "Servidor de jogo Web multijogador",
+    "engines": {
+        "node": "16.x"
+    },
+    "homepage": "https://github.com/ramolia/Monju-#readme",
+    "keywords": [
+        "game",
+        "node",
+        "phaser",
+        "web"
+    ],
+    "license": "MIT",
+    "main": "servidor.js",
+    "name": "monju-servidor",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ramolia/Monju-.git"
+    },
+    "scripts": {
+        "start": "node servidor.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "version": "0.1.0"
+}

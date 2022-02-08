@@ -11,7 +11,7 @@ var down;
 var left;
 var right;
 var button;
-var spyke;
+var spikes;
 var platforms;
 var gameOver = false;
 var k1 = false;
@@ -76,10 +76,10 @@ cena4.create = function () {
     spikes.create(680, 360, "spikeb").setScale(0.2).refreshBody() &&
     spikes.create(888, 360, "spikeb").setScale(0.2).refreshBody();
   //Laterais 1
-  spikes.create(09, 110, "spiked").setScale(0.2).refreshBody();
+  spikes.create(9, 110, "spiked").setScale(0.2).refreshBody();
   spikes.create(989.9, 110, "spikese").setScale(0.2).refreshBody();
   //Laterais 2
-  spikes.create(09, 460, "spiked").setScale(0.2).refreshBody();
+  spikes.create(9, 460, "spiked").setScale(0.2).refreshBody();
   spikes.create(989.9, 460, "spikese").setScale(0.2).refreshBody();
   //Meio 1
   spikes.create(200, 230, "spikesl").setScale(0.24).refreshBody() &&
@@ -248,12 +248,6 @@ function hitChegada(player, chegada) {
 
 function hitChegada2(player2, chegada) {
   che2 = true;
-}
-
-function prox() {
-  if ((che1 == che2) == true) {
-    gameOver = true;
-  }
 }
 
 export { cena4 };
