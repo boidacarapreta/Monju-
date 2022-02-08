@@ -20,6 +20,8 @@ var platforms;
 var gameOver = false;
 var k1 = false;
 var k2 = false;
+var key;
+var key2;
 
 cena4.preload = function () {
   this.load.image("background", "./assets/fundo.png");
@@ -108,8 +110,8 @@ cena4.create = function () {
     spikes.create(750, 395, "spikesc").setScale(0.22).refreshBody() &&
     spikes.create(750, 440, "spikesc").setScale(0.22).refreshBody();
 
-  key.create(35, 200, "key");
-  key2.create(35, 550, "key");
+  key.create(940, 200, "key");
+  key2.create(940, 550, "key");
 
   chegada.create(940, 269, "chegada").refreshBody();
   chegada.create(940, 615, "chegada").refreshBody();
