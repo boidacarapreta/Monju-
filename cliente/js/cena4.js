@@ -162,6 +162,8 @@ cena4.create = function () {
   this.physics.add.collider(player2, spikes, hitSpike, null, this);
   this.physics.add.overlap(player, key, hitKey, null, this);
   this.physics.add.overlap(player2, key2, hitKey2, null, this);
+  this.physics.add.overlap(player, chegada, hitChegada, null, this);
+  this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
 };
 
 cena4.update = function () {

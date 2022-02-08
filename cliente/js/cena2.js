@@ -6,6 +6,7 @@ var player2;
 var che1 = false;
 var che2 = false;
 var chegada;
+var chegada2;
 var cursors;
 var death;
 var teclaf;
@@ -56,7 +57,6 @@ cena2.create = function () {
   movel = this.physics.add.staticGroup();
   spikes = this.physics.add.staticGroup();
   chegada = this.physics.add.staticGroup();
-  chegada2 = this.physics.add.staticGroup();
   escada = this.physics.add.staticGroup();
 
   platforms.create(500, 325, "ground").setScale(1.2).refreshBody();
@@ -155,7 +155,7 @@ cena2.create = function () {
   this.physics.add.collider(player2, spikes, hitSpike, null, this);
   this.physics.add.collider(player, button, hitButton, null, this);
   this.physics.add.overlap(player, chegada, hitChegada, null, this);
-  this.physics.add.overlap(player2, chegada2, hitChegada2, null, this);
+  this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
 };
 
 cena2.create = function () {
@@ -164,17 +164,16 @@ cena2.create = function () {
   }
 
   ///Setas
- if (cursors.left.isDown) {
-   player.setVelocityX(-160);
-   player.anims.play("left", true);
- } else if (cursors.right.isDown) {
-   player.setVelocityX(160);
-   player.anims.play("right", true);
- } else {
-   player.setVelocityX(0);
-   player.anims.play("right");
- }
-
+  if (cursors.left.isDown) {
+    player.setVelocityX(-160);
+    player.anims.play("left", true);
+  } else if (cursors.right.isDown) {
+    player.setVelocityX(160);
+    player.anims.play("right", true);
+  } else {
+    player.setVelocityX(0);
+    player.anims.play("right");
+  }
 
   if (cursors.up.isDown && player.body.touching.down) {
     player.setVelocityY(-260);
@@ -228,7 +227,7 @@ function hitChegada(player, chegada) {
   che1 = true;
 }
 
-function hitChegada2(player2, chegada2) {
+function hitChegada2(player2, chegada) {
   che2 = true;
 }
 
