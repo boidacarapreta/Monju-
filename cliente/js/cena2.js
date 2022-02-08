@@ -6,7 +6,6 @@ var player2;
 var che1 = false;
 var che2 = false;
 var chegada;
-var chegada2;
 var cursors;
 var death;
 var teclaf;
@@ -80,10 +79,8 @@ cena2.create = function () {
     escada.create(480, 546, "escada").setScale(0.5).refreshBody() &&
     escada.create(730, 468, "escada").setScale(0.5).refreshBody();
 
-  movel.create(500, 100, "ground").setScale(1.2).disableBody(true, true);
-
   chegada.create(940, 269, "chegada");
-  chegada2.create(940, 615, "chegada");
+  chegada.create(940, 615, "chegada");
 
   player = this.physics.add.sprite(100, 130, "alienvd", "alienve");
   player2 = this.physics.add.sprite(100, 530, "alienrd", "alienre");
@@ -136,9 +133,7 @@ cena2.create = function () {
     //repeat:
   });
 
-  //  Input Events
   cursors = this.input.keyboard.createCursorKeys();
-
   up = this.input.keyboard.addKey("W");
   down = this.input.keyboard.addKey("S");
   left = this.input.keyboard.addKey("A");
