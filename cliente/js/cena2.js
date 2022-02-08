@@ -164,16 +164,17 @@ cena2.create = function () {
   }
 
   ///Setas
-  if (cursors.left.isDown) {
-    player.setVelocityX(-160);
-    player.anims.play("left", true);
-  } else if (cursors.right.isDown) {
-    player.setVelocityX(160);
-    player.anims.play("right", true);
-  } else {
-    player.setVelocityX(0);
-    player.anims.play("right");
-  }
+ if (cursors.left.isDown) {
+   player.setVelocityX(-160);
+   player.anims.play("left", true);
+ } else if (cursors.right.isDown) {
+   player.setVelocityX(160);
+   player.anims.play("right", true);
+ } else {
+   player.setVelocityX(0);
+   player.anims.play("right");
+ }
+
 
   if (cursors.up.isDown && player.body.touching.down) {
     player.setVelocityY(-260);
