@@ -132,8 +132,13 @@ cena1.create = function () {
 
 cena1.update = function () {
   if (gameOver) {
-    return;
-    restart.call();
+    restart.call(this);
+    /*this.physics.pause();
+    player.setTint(0xff0000);
+    player.anims.play(right);
+    player2.setTint(0xff0000);
+    player2.anims.play("right2");
+    //return; // trava tudo, slk*/
   }
 
   ///Setas
@@ -204,16 +209,8 @@ function hitChegada2(player2, chegada) {
 }
 
 function restart() {
-  this.time.delayedCall(
-    500,
-    function () {
-      this.registry.destroy();
-      this.events.off();
-      this.scene.restart();
-    },
-    [],
-    this
-  );
+  this.input.on("pointerdown", () => this.scene.start("Cena 1"));
+  //this.input.on("pointerdown", () => this.scene.restart());
 }
 
 export { cena1 };

@@ -154,7 +154,13 @@ cena2.create = function () {
 
 cena2.update = function () {
   if (gameOver) {
-    return;
+    restart.call(this);
+    /*this.physics.pause();
+    player.setTint(0xff0000);
+    player.anims.play(right);
+    player2.setTint(0xff0000);
+    player2.anims.play("right2");
+    //return; // trava tudo, slk*/
   }
 
   ///Setas
@@ -222,6 +228,11 @@ function hitChegada(player, chegada) {
 
 function hitChegada2(player2, chegada) {
   che2 = true;
+}
+
+function restart() {
+  this.input.on("pointerdown", () => this.scene.start("Cena 2"));
+  //this.input.on("pointerdown", () => this.scene.restart());
 }
 
 export { cena2 };
