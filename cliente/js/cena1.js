@@ -133,6 +133,7 @@ cena1.create = function () {
 cena1.update = function () {
   if (gameOver) {
     return;
+    restart.call();
   }
 
   ///Setas
@@ -200,6 +201,19 @@ function hitChegada(player, chegada) {
 
 function hitChegada2(player2, chegada) {
   che2 = true;
+}
+
+function restart() {
+  this.time.delayedCall(
+    500,
+    function () {
+      this.registry.destroy();
+      this.events.off();
+      this.scene.restart();
+    },
+    [],
+    this
+  );
 }
 
 export { cena1 };
