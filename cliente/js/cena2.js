@@ -5,10 +5,11 @@ var player;
 var player2;
 var che1 = false;
 var che2 = false;
+var chegada;
+var cursors;
 var death;
 var teclaf;
 var ativar = false;
-var desativar;
 var up;
 var down;
 var left;
@@ -19,29 +20,29 @@ var platforms;
 var gameOver = false;
 
 cena2.preload = function () {
-  this.load.audio("death", "assets/death.mp3");
-  this.load.image("background", "assets/fundo.png");
-  this.load.image("ground", "assets/meio.png");
-  this.load.image("spike", "assets/spykes.png");
-  this.load.image("chegada", "assets/chegada.png");
-  this.load.image("escada", "assets/escada.png");
-  this.load.spritesheet("alienvd", "assets/alienvd.png", {
+  this.load.audio("death", "./assets/death.mp3");
+  this.load.image("background", "./assets/fundo.png");
+  this.load.image("ground", "./assets/meio.png");
+  this.load.image("spike", "./assets/spykes.png");
+  this.load.image("chegada", "./assets/chegada.png");
+  this.load.image("escada", "./assets/escada.png");
+  this.load.spritesheet("alienvd", "./assets/alienvd.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-  this.load.spritesheet("alienve", "assets/alienve.png", {
+  this.load.spritesheet("alienve", "./assets/alienve.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-  this.load.spritesheet("alienrd", "assets/alienrd.png", {
+  this.load.spritesheet("alienrd", "./assets/alienrd.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-  this.load.spritesheet("alienre", "assets/alienre.png", {
+  this.load.spritesheet("alienre", "./assets/alienre.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-  this.load.spritesheet("button", "assets/button.png", {
+  this.load.spritesheet("button", "./assets/button.png", {
     frameWidth: 36,
     frameHeight: 18,
   });

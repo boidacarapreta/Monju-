@@ -5,12 +5,16 @@ var player;
 var player2;
 var che1 = false;
 var che2 = false;
+var chegada;
+var cursors;
 var death;
+//var teclaf;
+//var ativar = false;
 var up;
 var down;
 var left;
 var right;
-var button;
+//var button;
 var spikes;
 var platforms;
 var gameOver = false;
@@ -18,36 +22,36 @@ var k1 = false;
 var k2 = false;
 
 cena4.preload = function () {
-  this.load.image("background", "assets/fundo.png");
-  this.load.image("ground", "assets/meio.png");
-  this.load.image("button", "assets/button.png");
-  this.load.image("spikeb", "assets/spykesb.png");
-  this.load.image("spiked", "assets/spykesd.png");
-  this.load.image("spikese", "assets/spykese.png");
-  this.load.image("spikesc", "assets/spykesc.png");
-  this.load.image("spikesl", "assets/spykesl.png");
-  this.load.image("chegada", "assets/chegada.png");
-  this.load.image("key", "assets/key.png");
-  this.load.spritesheet("alienvd", "assets/alienvd.png", {
+  this.load.image("background", "./assets/fundo.png");
+  this.load.image("ground", "./assets/meio.png");
+  this.load.image("button", "./assets/button.png");
+  this.load.image("spikeb", "./assets/spykesb.png");
+  this.load.image("spiked", "./assets/spykesd.png");
+  this.load.image("spikese", "./assets/spykese.png");
+  this.load.image("spikesc", "./assets/spykesc.png");
+  this.load.image("spikesl", "./assets/spykesl.png");
+  this.load.image("chegada", "./assets/chegada.png");
+  this.load.image("key", "./assets/key.png");
+  this.load.spritesheet("alienvd", "./assets/alienvd.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-  this.load.spritesheet("alienve", "assets/alienve.png", {
+  this.load.spritesheet("alienve", "./assets/alienve.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-  this.load.spritesheet("alienrd", "assets/alienrd.png", {
+  this.load.spritesheet("alienrd", "./assets/alienrd.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-  this.load.spritesheet("alienre", "assets/alienre.png", {
+  this.load.spritesheet("alienre", "./assets/alienre.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
 
-  this.load.audio("death", "assets/death.mp3");
+  this.load.audio("death", "./assets/death.mp3");
 
-  this.load.image("restart", "assets/restart.png");
+  this.load.image("restart", "./assets/restart.png");
 };
 
 cena4.create = function () {
