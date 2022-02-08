@@ -17,6 +17,7 @@ var right;
 var button;
 var spikes;
 var platforms;
+var escada;
 var gameOver = false;
 
 cena2.preload = function () {
@@ -24,8 +25,8 @@ cena2.preload = function () {
   this.load.image("background", "./assets/fundo.png");
   this.load.image("ground", "./assets/meio.png");
   this.load.image("spike", "./assets/spykes.png");
-  this.load.image("chegada", "./assets/chegada.png");
   this.load.image("escada", "./assets/escada.png");
+  this.load.image("chegada", "./assets/chegada.png");
   this.load.spritesheet("alienvd", "./assets/alienvd.png", {
     frameWidth: 32,
     frameHeight: 48,
@@ -46,6 +47,7 @@ cena2.preload = function () {
     frameWidth: 36,
     frameHeight: 18,
   });
+  this.load.audio("death", "./assets/death.mp3");
 };
 
 cena2.create = function () {
@@ -53,7 +55,6 @@ cena2.create = function () {
   death = this.sound.add("death");
 
   platforms = this.physics.add.staticGroup();
-  movel = this.physics.add.staticGroup();
   spikes = this.physics.add.staticGroup();
   chegada = this.physics.add.staticGroup();
   escada = this.physics.add.staticGroup();
@@ -84,7 +85,7 @@ cena2.create = function () {
 
   player = this.physics.add.sprite(100, 130, "alienvd", "alienve");
   player2 = this.physics.add.sprite(100, 530, "alienrd", "alienre");
-  //button = this.physics.add.staticSprite(500, 285, 'button');
+  ///button = this.physics.add.staticSprite(500, 285, "button");
 
   player.setBounce(0.2);
   player.setCollideWorldBounds(true);
@@ -140,12 +141,10 @@ cena2.create = function () {
   right = this.input.keyboard.addKey("D");
   teclaf = this.input.keyboard.addKey("F");
 
-  //  Collide the player and the stars with the platforms
   this.physics.add.collider(player, platforms);
   this.physics.add.collider(player2, platforms);
   this.physics.add.collider(player, escada);
   this.physics.add.collider(player2, escada);
-  this.physics.add.collider(player, movel);
   this.physics.add.collider(player, spikes, hitSpike, null, this);
   this.physics.add.collider(player2, spikes, hitSpike, null, this);
   this.physics.add.collider(player, button, hitButton, null, this);
@@ -153,7 +152,7 @@ cena2.create = function () {
   this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
 };
 
-cena2.create = function () {
+cena2.update = function () {
   if (gameOver) {
     return;
   }
@@ -210,11 +209,10 @@ function hitButton(player, button) {
   if (teclaf.isDown && ativar == false) {
     button.anims.play("on");
     ativar = true;
-    movel.disableBody(true, true);
   } else if (teclaf.isDown && ativar == true) {
     button.anims.play("off");
     ativar = false;
-    movel.enableBody(true, true);
+    platforms.create(500, 100, "ground").setScale(1.2).refreshBody();
   }
 }
 
