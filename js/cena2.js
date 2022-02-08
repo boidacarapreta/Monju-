@@ -18,7 +18,7 @@ var spyke;
 var platforms;
 var gameOver = false;
 
-cena3.preload = function () {
+cena2.preload = function () {
   this.load.audio("death", "assets/death.mp3");
   this.load.image("background", "assets/fundo.png");
   this.load.image("ground", "assets/meio.png");
@@ -47,7 +47,7 @@ cena3.preload = function () {
   });
 };
 
-cena3.create = function () {
+cena2.create = function () {
   this.add.image(500, 325, "background");
   death = this.sound.add("death");
 
@@ -157,7 +157,7 @@ cena3.create = function () {
   this.physics.add.overlap(player2, chegada2, hitChegada2, null, this);
 };
 
-cena3.create = function () {
+cena2.create = function () {
   if (gameOver) {
     return;
   }

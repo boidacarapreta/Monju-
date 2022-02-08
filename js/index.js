@@ -2,6 +2,7 @@ import { cena1 } from "./cena1.js";
 import { cena2 } from "./cena2.js";
 import { cena3 } from "./cena3.js";
 import { cena4 } from "./cena4.js";
+import { cena5 } from "./cena5.js";
 
 var config = {
   type: Phaser.AUTO,

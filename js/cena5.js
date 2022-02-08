@@ -1,12 +1,12 @@
 import { cena1 } from "./cena1.js";
 
-var cena2 = new Phaser.Scene("Cena 2");
+var cena5 = new Phaser.Scene("Cena 5");
 
-cena2.preload = function () {
+cena5.preload = function () {
   this.load.image("fim", "assets/fim.png");
 };
 
-cena2.create = function () {
+cena5.create = function () {
   var button = this.add.image(500, 325, "fim", 0).setInteractive();
 
   button.on(
@@ -18,6 +18,6 @@ cena2.create = function () {
   );
 };
 
-cena2.update = function () {};
+cena5.update = function () {};
 
 export { cena5 };
