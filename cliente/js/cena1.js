@@ -26,6 +26,7 @@ cena1.preload = function () {
   this.load.image("spike", "./assets/spykes.png");
   this.load.image("chegada", "./assets/chegada.png");
   this.load.image("escada", "./assets/escada.png");
+
   this.load.spritesheet("alienvd", "./assets/alienvd.png", {
     frameWidth: 32,
     frameHeight: 48,
@@ -51,8 +52,8 @@ cena1.preload = function () {
 
 cena1.create = function () {
   this.add.image(500, 325, "background");
-  death = this.sound.add("death");
 
+  death = this.sound.add("death");
   platforms = this.physics.add.staticGroup();
   spikes = this.physics.add.staticGroup();
   chegada = this.physics.add.staticGroup();
