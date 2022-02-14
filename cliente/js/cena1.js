@@ -66,8 +66,7 @@ cena1.create = function () {
   player2 = this.physics.add.sprite(100, 530, "alienrd", "alienre");
   button = this.physics.add.staticSprite(490, 285, "button");
 
-  player.setBounce(0.2);
-  player.setCollideWorldBounds(true);
+
   player2.setBounce(0.2);
   player2.setCollideWorldBounds(true);
 
@@ -129,6 +128,144 @@ cena1.create = function () {
   this.physics.add.overlap(player, chegada, hitChegada, null, this);
   this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
 };
+
+
+this.socket = io();
+
+  // Disparar evento quando jogador entrar na partida
+  var self = this;
+  var physics = this.physics;
+  var cameras = this.cameras;
+  var time = this.time;
+  var socket = this.socket;
+
+  this.socket.on("jogadores", function (jogadores) {
+    if (jogadores.primeiro === self.socket.id) {
+      // Define jogador como o primeiro
+      jogador = 1;
+        player.setBounce(0.2);
+       player.setCollideWorldBounds(true);
+
+      // Personagens colidem com os limites da cena
+      player1.setCollideWorldBounds(true);
+
+      // Detecção de colisão: terreno
+      physics.add.collider(player1, terreno, hitCave, null, this);
+
+      // Detecção de colisão e disparo de evento: ARCas
+      physics.add.collider(player1, ARCas, hitARCa, null, this);
+
+      // Câmera seguindo o personagem 1
+      cameras.main.startFollow(player1);
+
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+        })
+        .catch((error) => console.log(error));
+    } else if (jogadores.segundo === self.socket.id) {
+      // Define jogador como o segundo
+      jogador = 2;
+
+      // Personagens colidem com os limites da cena
+      player2.setCollideWorldBounds(true);
+
+      // Detecção de colisão: terreno
+      physics.add.collider(player2, terreno, hitCave, null, this);
+
+      // Detecção de colisão e disparo de evento: ARCas
+      physics.add.collider(player2, ARCas, hitARCa, null, this);
+
+      // Câmera seguindo o personagem 2
+      cameras.main.startFollow(player2);
+
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+          localConnection = new RTCPeerConnection(ice_servers);
+          midias
+            .getTracks()
+            .forEach((track) => localConnection.addTrack(track, midias));
+          localConnection.onicecandidate = ({ candidate }) => {
+            candidate &&
+              socket.emit("candidate", jogadores.primeiro, candidate);
+          };
+          console.log(midias);
+          localConnection.ontrack = ({ streams: [midias] }) => {
+            audio.srcObject = midias;
+          };
+          localConnection
+            .createOffer()
+            .then((offer) => localConnection.setLocalDescription(offer))
+            .then(() => {
+              socket.emit(
+                "offer",
+                jogadores.primeiro,
+                localConnection.localDescription
+              );
+            });
+        })
+        .catch((error) => console.log(error));
+    }
+
+    // Os dois jogadores estão conectados
+    console.log(jogadores);
+    if (jogadores.primeiro !== undefined && jogadores.segundo !== undefined) {
+      // Contagem regressiva em segundos (1.000 milissegundos)
+      timer = 60;
+      timedEvent = time.addEvent({
+        delay: 1000,
+        callback: countdown,
+        callbackScope: this,
+        loop: true,
+      });
+    }
+  });
+
+  this.socket.on("offer", (socketId, description) => {
+    remoteConnection = new RTCPeerConnection(ice_servers);
+    midias
+      .getTracks()
+      .forEach((track) => remoteConnection.addTrack(track, midias));
+    remoteConnection.onicecandidate = ({ candidate }) => {
+      candidate && socket.emit("candidate", socketId, candidate);
+    };
+    remoteConnection.ontrack = ({ streams: [midias] }) => {
+      audio.srcObject = midias;
+    };
+    remoteConnection
+      .setRemoteDescription(description)
+      .then(() => remoteConnection.createAnswer())
+      .then((answer) => remoteConnection.setLocalDescription(answer))
+      .then(() => {
+        socket.emit("answer", socketId, remoteConnection.localDescription);
+      });
+  });
+
+  socket.on("answer", (description) => {
+    localConnection.setRemoteDescription(description);
+  });
+
+  socket.on("candidate", (candidate) => {
+    const conn = localConnection || remoteConnection;
+    conn.addIceCandidate(new RTCIceCandidate(candidate));
+  });
+
+  // Desenhar o outro jogador
+  this.socket.on("desenharOutroJogador", ({ frame, x, y }) => {
+    if (jogador === 1) {
+      player2.setFrame(frame);
+      player2.x = x;
+      player2.y = y;
+    } else if (jogador === 2) {
+      player1.setFrame(frame);
+      player1.x = x;
+      player1.y = y;
+    }
+  });
+
 
 cena1.update = function () {
   if (gameOver) {
