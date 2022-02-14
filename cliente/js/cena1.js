@@ -6,6 +6,7 @@ var player2;
 var che1 = false;
 var che2 = false;
 var chegada;
+var escada;
 var cursors;
 var death;
 var teclaf;
@@ -24,6 +25,7 @@ cena1.preload = function () {
   this.load.image("ground", "./assets/meio.png");
   this.load.image("spike", "./assets/spykes.png");
   this.load.image("chegada", "./assets/chegada.png");
+  this.load.image("escada", "./assets/escada.png");
   this.load.spritesheet("alienvd", "./assets/alienvd.png", {
     frameWidth: 32,
     frameHeight: 48,
@@ -54,18 +56,14 @@ cena1.create = function () {
   platforms = this.physics.add.staticGroup();
   spikes = this.physics.add.staticGroup();
   chegada = this.physics.add.staticGroup();
+  escada = this.physics.add.staticGroup();
 
   platforms.create(500, 325, "ground").setScale(1.2).refreshBody();
-  spikes.create(500, 185, "spike").setScale(0.2).refreshBody();
-  platforms.create(500, 200, "ground").setScale(0.35).refreshBody();
   platforms.create(500, 672, "ground").setScale(1.2).refreshBody();
-
-  chegada.create(940, 269, "chegada").refreshBody();
-  chegada.create(940, 615, "chegada").refreshBody();
 
   player = this.physics.add.sprite(100, 130, "alienvd", "alienve");
   player2 = this.physics.add.sprite(100, 530, "alienrd", "alienre");
-  button = this.physics.add.staticSprite(500, 285, "button");
+  button = this.physics.add.staticSprite(490, 285, "button");
 
   player.setBounce(0.2);
   player.setCollideWorldBounds(true);
@@ -126,6 +124,7 @@ cena1.create = function () {
   this.physics.add.collider(player, spikes, hitSpike, null, this);
   this.physics.add.collider(player2, spikes, hitSpike, null, this);
   this.physics.add.collider(player, button, hitButton, null, this);
+  this.physics.add.collider(player2, escada);
   this.physics.add.overlap(player, chegada, hitChegada, null, this);
   this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
 };
@@ -193,10 +192,12 @@ function hitButton(player, button) {
   if (teclaf.isDown && ativar == false) {
     button.anims.play("on");
     ativar = true;
-  } else if (teclaf.isDown && ativar == true) {
-    button.anims.play("off");
-    ativar = false;
-    platforms.create(500, 100, "ground").setScale(1.2).refreshBody();
+
+    escada.create(600, 550, "escada").setScale(0.8).refreshBody();
+    escada.create(780, 500, "escada").setScale(0.8).refreshBody();
+    escada.create(940, 433, "escada").setScale(0.8).refreshBody();
+    chegada.create(940, 385, "chegada").refreshBody();
+    chegada.create(940, 269, "chegada").refreshBody();
   }
 }
 
