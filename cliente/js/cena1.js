@@ -19,6 +19,14 @@ var button;
 var spikes;
 var platforms;
 var gameOver = false;
+var jogador;
+var ice_servers = {
+  iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+};
+var localConnection;
+var remoteConnection;
+var midias;
+const audio = document.querySelector("audio");
 
 cena1.preload = function () {
   this.load.image("background", "./assets/fundo.png");
@@ -65,10 +73,6 @@ cena1.create = function () {
   player = this.physics.add.sprite(100, 130, "alienvd", "alienve");
   player2 = this.physics.add.sprite(100, 530, "alienrd", "alienre");
   button = this.physics.add.staticSprite(490, 285, "button");
-
-
-  player2.setBounce(0.2);
-  player2.setCollideWorldBounds(true);
 
   this.anims.create({
     key: "left",
@@ -119,44 +123,25 @@ cena1.create = function () {
   right = this.input.keyboard.addKey("D");
   teclaf = this.input.keyboard.addKey("F");
 
-  this.physics.add.collider(player, platforms);
-  this.physics.add.collider(player2, platforms);
-  this.physics.add.collider(player, spikes, hitSpike, null, this);
-  this.physics.add.collider(player2, spikes, hitSpike, null, this);
-  this.physics.add.collider(player, button, hitButton, null, this);
-  this.physics.add.collider(player2, escada);
-  this.physics.add.overlap(player, chegada, hitChegada, null, this);
-  this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
-};
-
-
-this.socket = io();
+  this.socket = io();
 
   // Disparar evento quando jogador entrar na partida
   var self = this;
   var physics = this.physics;
-  var cameras = this.cameras;
-  var time = this.time;
   var socket = this.socket;
 
   this.socket.on("jogadores", function (jogadores) {
+
     if (jogadores.primeiro === self.socket.id) {
-      // Define jogador como o primeiro
       jogador = 1;
-        player.setBounce(0.2);
-       player.setCollideWorldBounds(true);
+      player.setBounce(0.2);
+      player.setCollideWorldBounds(true);
+      physics.add.collider(player, platforms);
+      physics.add.collider(player, spikes, hitSpike, null, this);
+      physics.add.collider(player, button, hitButton, null, this);
+      physics.add.overlap(player, chegada, hitChegada, null, this);
 
-      // Personagens colidem com os limites da cena
-      player1.setCollideWorldBounds(true);
-
-      // Detecção de colisão: terreno
-      physics.add.collider(player1, terreno, hitCave, null, this);
-
-      // Detecção de colisão e disparo de evento: ARCas
-      physics.add.collider(player1, ARCas, hitARCa, null, this);
-
-      // Câmera seguindo o personagem 1
-      cameras.main.startFollow(player1);
+      //cameras.main.startFollow(player1);
 
       navigator.mediaDevices
         .getUserMedia({ video: false, audio: true })
@@ -165,20 +150,15 @@ this.socket = io();
         })
         .catch((error) => console.log(error));
     } else if (jogadores.segundo === self.socket.id) {
-      // Define jogador como o segundo
       jogador = 2;
-
-      // Personagens colidem com os limites da cena
+      player2.setBounce(0.2);
       player2.setCollideWorldBounds(true);
+      physics.add.collider(player2, platforms);
+      physics.add.collider(player2, spikes, hitSpike, null, this);
+      physics.add.collider(player2, escada);
+      physics.add.overlap(player2, chegada, hitChegada2, null, this);
 
-      // Detecção de colisão: terreno
-      physics.add.collider(player2, terreno, hitCave, null, this);
-
-      // Detecção de colisão e disparo de evento: ARCas
-      physics.add.collider(player2, ARCas, hitARCa, null, this);
-
-      // Câmera seguindo o personagem 2
-      cameras.main.startFollow(player2);
+      //cameras.main.startFollow(player2);
 
       navigator.mediaDevices
         .getUserMedia({ video: false, audio: true })
@@ -212,16 +192,6 @@ this.socket = io();
 
     // Os dois jogadores estão conectados
     console.log(jogadores);
-    if (jogadores.primeiro !== undefined && jogadores.segundo !== undefined) {
-      // Contagem regressiva em segundos (1.000 milissegundos)
-      timer = 60;
-      timedEvent = time.addEvent({
-        delay: 1000,
-        callback: countdown,
-        callbackScope: this,
-        loop: true,
-      });
-    }
   });
 
   this.socket.on("offer", (socketId, description) => {
@@ -260,12 +230,12 @@ this.socket = io();
       player2.x = x;
       player2.y = y;
     } else if (jogador === 2) {
-      player1.setFrame(frame);
-      player1.x = x;
-      player1.y = y;
+      player.setFrame(frame);
+      player.x = x;
+      player.y = y;
     }
   });
-
+};
 
 cena1.update = function () {
   if (gameOver) {
@@ -278,6 +248,52 @@ cena1.update = function () {
     //return; // trava tudo, slk*/
   }
 
+  if (jogador === 1) {
+    if (cursors.left.isDown) {
+      player.body.setVelocityX(-160);
+      player.anims.play("left", true);
+    } else if (cursors.right.isDown) {
+      player.body.setVelocityX(160);
+      player.anims.play("right", true);
+    } else {
+      player.body.setVelocity(0);
+      player.anims.play("right", true);
+    }
+    if (cursors.up.isDown && player.body.touching.down) {
+      player.body.setVelocityY(-260);
+    } else {
+      player.body.setVelocityY(10);
+    }
+    this.socket.emit("estadoDoJogador", {
+      frame: player.anims.currentFrame.index,
+      x: player.body.x,
+      y: player.body.y,
+    });
+  } else if (jogador === 2) {
+    if (cursors.left.isDown) {
+      player2.body.setVelocityX(-160);
+      player2.anims.play("left2", true);
+    } else if (cursors.right.isDown) {
+      player2.body.setVelocityX(160);
+      player2.anims.play("right2", true);
+    } else {
+      player2.body.setVelocity(0);
+      player2.anims.play("right2", true);
+    }
+    if (cursors.up.isDown && player2.body.touching.down) {
+      player2.body.setVelocityY(-260);
+    } else {
+      player2.body.setVelocityY(0);
+    }
+
+    this.socket.emit("estadoDoJogador", {
+      frame: player2.anims.currentFrame.index,
+      x: player2.body.x,
+      y: player2.body.y,
+    });
+  }
+
+  /*
   ///Setas
   if (cursors.left.isDown) {
     player.setVelocityX(-160);
@@ -309,6 +325,7 @@ cena1.update = function () {
   if (up.isDown && player2.body.touching.down) {
     player2.setVelocityY(-260);
   }
+*/
 
   if (che1 == true && che2 == true) {
     this.scene.start(cena2);

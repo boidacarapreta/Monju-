@@ -22,6 +22,14 @@ var k1 = false;
 var k2 = false;
 var key;
 var key2;
+var jogador;
+var ice_servers = {
+  iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+};
+var localConnection;
+var remoteConnection;
+var midias;
+const audio = document.querySelector("audio");
 
 cena4.preload = function () {
   this.load.image("background", "./assets/fundo.png");
@@ -158,14 +166,123 @@ cena4.create = function () {
   left = this.input.keyboard.addKey("A");
   right = this.input.keyboard.addKey("D");
 
-  this.physics.add.collider(player, platforms);
-  this.physics.add.collider(player2, platforms);
-  this.physics.add.collider(player, spikes, hitSpike, null, this);
-  this.physics.add.collider(player2, spikes, hitSpike, null, this);
-  this.physics.add.overlap(player, key, hitKey, null, this);
-  this.physics.add.overlap(player2, key2, hitKey2, null, this);
-  this.physics.add.overlap(player, chegada, hitChegada, null, this);
-  this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
+  
+  this.socket = io();
+
+  // Disparar evento quando jogador entrar na partida
+  var self = this;
+  var physics = this.physics;
+  var socket = this.socket;
+
+  this.socket.on("jogadores", function (jogadores) {
+
+    if (jogadores.primeiro === self.socket.id) {
+      jogador = 1;
+      player.setBounce(0.2);
+      player.setCollideWorldBounds(true);
+      physics.add.collider(player, platforms);
+      physics.add.collider(player, spikes, hitSpike, null, this);
+      physics.add.collider(player, button, hitButton, null, this);
+      physics.add.overlap(player, chegada, hitChegada, null, this);
+      this.physics.add.overlap(player, key, hitKey, null, this);
+
+      //cameras.main.startFollow(player1);
+
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+        })
+        .catch((error) => console.log(error));
+    } else if (jogadores.segundo === self.socket.id) {
+      jogador = 2;
+      player2.setBounce(0.2);
+      player2.setCollideWorldBounds(true);
+      physics.add.collider(player2, platforms);
+      physics.add.collider(player2, spikes, hitSpike, null, this);
+      physics.add.collider(player2, escada);
+      physics.add.overlap(player2, chegada, hitChegada2, null, this);
+      this.physics.add.overlap(player2, key2, hitKey2, null, this);
+
+      //cameras.main.startFollow(player2);
+
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+          localConnection = new RTCPeerConnection(ice_servers);
+          midias
+            .getTracks()
+            .forEach((track) => localConnection.addTrack(track, midias));
+          localConnection.onicecandidate = ({ candidate }) => {
+            candidate &&
+              socket.emit("candidate", jogadores.primeiro, candidate);
+          };
+          console.log(midias);
+          localConnection.ontrack = ({ streams: [midias] }) => {
+            audio.srcObject = midias;
+          };
+          localConnection
+            .createOffer()
+            .then((offer) => localConnection.setLocalDescription(offer))
+            .then(() => {
+              socket.emit(
+                "offer",
+                jogadores.primeiro,
+                localConnection.localDescription
+              );
+            });
+        })
+        .catch((error) => console.log(error));
+    }
+
+    // Os dois jogadores estão conectados
+    console.log(jogadores);
+  });
+
+  this.socket.on("offer", (socketId, description) => {
+    remoteConnection = new RTCPeerConnection(ice_servers);
+    midias
+      .getTracks()
+      .forEach((track) => remoteConnection.addTrack(track, midias));
+    remoteConnection.onicecandidate = ({ candidate }) => {
+      candidate && socket.emit("candidate", socketId, candidate);
+    };
+    remoteConnection.ontrack = ({ streams: [midias] }) => {
+      audio.srcObject = midias;
+    };
+    remoteConnection
+      .setRemoteDescription(description)
+      .then(() => remoteConnection.createAnswer())
+      .then((answer) => remoteConnection.setLocalDescription(answer))
+      .then(() => {
+        socket.emit("answer", socketId, remoteConnection.localDescription);
+      });
+  });
+
+  socket.on("answer", (description) => {
+    localConnection.setRemoteDescription(description);
+  });
+
+  socket.on("candidate", (candidate) => {
+    const conn = localConnection || remoteConnection;
+    conn.addIceCandidate(new RTCIceCandidate(candidate));
+  });
+
+  // Desenhar o outro jogador
+  this.socket.on("desenharOutroJogador", ({ frame, x, y }) => {
+    if (jogador === 1) {
+      player2.setFrame(frame);
+      player2.x = x;
+      player2.y = y;
+    } else if (jogador === 2) {
+      player.setFrame(frame);
+      player.x = x;
+      player.y = y;
+    }
+  });
+};
+
 };
 
 cena4.update = function () {
