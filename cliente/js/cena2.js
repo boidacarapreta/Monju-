@@ -281,13 +281,13 @@ cena2.update = function () {
       player.body.setVelocityX(160);
       player.anims.play("right", true);
     } else {
-      player.body.setVelocity(0);
+      player.body.setVelocityX(0);
       player.anims.play("right", true);
     }
     if (cursors.up.isDown && player.body.touching.down) {
       player.body.setVelocityY(-260);
     } else {
-      player.body.setVelocityY(10);
+      player.body.setVelocityY(0);
     }
     this.socket.emit("estadoDoJogador", {
       frame: player.anims.currentFrame.index,
@@ -302,7 +302,7 @@ cena2.update = function () {
       player2.body.setVelocityX(160);
       player2.anims.play("right2", true);
     } else {
-      player2.body.setVelocity(0);
+      player2.body.setVelocityX(0);
       player2.anims.play("right2", true);
     }
     if (cursors.up.isDown && player2.body.touching.down) {

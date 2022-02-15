@@ -296,50 +296,51 @@ cena4.update = function () {
     //return; // trava tudo, slk*/
   }
 
-  ///Setas
-  if (cursors.left.isDown) {
-    player.setVelocityX(-10);
-    player.anims.play("left", true);
-  } else if (cursors.right.isDown) {
-    player.setVelocityX(10);
-    player.anims.play("right", true);
-  } else {
-    player.setVelocityX(0);
-    player.anims.play("right");
-  }
+  if (jogador === 1) {
+    if (cursors.left.isDown) {
+      player.body.setVelocityX(-10);
+      player.anims.play("left", true);
+    } else if (cursors.right.isDown) {
+      player.body.setVelocityX(10);
+      player.anims.play("right", true);
+    } else {
+      player.body.setVelocityX(0);
+      player.anims.play("right", true);
+    }
+    if (cursors.up.isDown) {
+      player.body.setVelocityY(-60);
+    } if (cursors.up.isDown && cursors.right.isDown){
+      player.body.setVelocityY(-60);
+      player.body.setVelocityX(300);
+    }
+    this.socket.emit("estadoDoJogador", {
+      frame: player.anims.currentFrame.index,
+      x: player.body.x,
+      y: player.body.y,
+    });
+  } else if (jogador === 2) {
+    if (cursors.left.isDown) {
+      player2.body.setVelocityX(-10);
+      player2.anims.play("left2", true);
+    } else if (cursors.right.isDown) {
+      player2.body.setVelocityX(10);
+      player2.anims.play("right2", true);
+    } else {
+      player2.body.setVelocityX(0);
+      player2.anims.play("right2", true);
+    }
+    if (cursors.up.isDown) {
+      player2.body.setVelocityY(-60);
+    } if (up.isDown && right.isDown){
+      player2.body.setVelocityY(-60);
+      player2.body.setVelocityX(300);
+    }
 
-  if (cursors.up.isDown) {
-    player.setVelocityY(-60);
-  }
-
-  if (cursors.up.isDown && cursors.right.isDown) {
-    player.setVelocityY(-60);
-    player.setVelocityX(300);
-  }
-
-  /// WASD
-  if (left.isDown) {
-    player2.setVelocityX(-10);
-    player2.anims.play("left2", true);
-  } else if (right.isDown) {
-    player2.setVelocityX(10);
-    player2.anims.play("right2", true);
-  } else {
-    player2.setVelocityX(0);
-    player2.anims.play("right2");
-  }
-
-  if (up.isDown) {
-    player2.setVelocityY(-60);
-  }
-
-  if (up.isDown && right.isDown) {
-    player2.setVelocityY(-60);
-    player2.setVelocityX(300);
-  }
-
-  if (k1 == true && k2 == true && che1 == true && che2 == true) {
-    this.scene.start(cena5);
+    this.socket.emit("estadoDoJogador", {
+      frame: player2.anims.currentFrame.index,
+      x: player2.body.x,
+      y: player2.body.y,
+    });
   }
 };
 

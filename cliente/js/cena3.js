@@ -137,7 +137,6 @@ cena3.create = function () {
   left = this.input.keyboard.addKey("A");
   right = this.input.keyboard.addKey("D");
 
-  
   this.socket = io();
 
   // Disparar evento quando jogador entrar na partida
@@ -146,7 +145,6 @@ cena3.create = function () {
   var socket = this.socket;
 
   this.socket.on("jogadores", function (jogadores) {
-
     if (jogadores.primeiro === self.socket.id) {
       jogador = 1;
       player.setBounce(0.2);
@@ -250,7 +248,6 @@ cena3.create = function () {
       player.y = y;
     }
   });
-};
 
   this.physics.add.collider(player, platforms);
   this.physics.add.collider(player2, platforms);
