@@ -248,49 +248,71 @@ cena3.create = function () {
       player.y = y;
     }
   });
-
-  this.physics.add.collider(player, platforms);
-  this.physics.add.collider(player2, platforms);
-  this.physics.add.collider(player, spikes, hitSpike, null, this);
-  this.physics.add.collider(player2, spikes, hitSpike, null, this);
-  this.physics.add.overlap(player, chegada, hitChegada, null, this);
-  this.physics.add.overlap(player2, chegada, hitChegada2, null, this);
 };
 
 cena3.update = function () {
   if (gameOver) {
     restart.call(this);
-    /*this.physics.pause();
-    player.setTint(0xff0000);
-    player.anims.play(right);
-    player2.setTint(0xff0000);
-    player2.anims.play("right2");
-    //return; // trava tudo, slk*/
   }
 
-  ///Setas
-  if (cursors.left.isDown) {
-    player.setVelocityX(-200);
-    player.anims.play("left", true);
-    player2.setVelocityX(-200);
-    player2.anims.play("left2", true);
-  } else if (cursors.right.isDown) {
-    player.setVelocityX(190);
-    player.anims.play("right", true);
-    player2.setVelocityX(160);
-    player2.anims.play("right2", true);
-  } else {
-    player.setVelocityX(0);
-    player.anims.play("right");
-    player2.setVelocityX(0);
-    player2.anims.play("right2");
-  }
+  if (jogador === 1) {
+    if (cursors.left.isDown) {
+      player.body.setVelocityX(-200);
+      player.anims.play("left", true);
+      player.body.setVelocityX(-200);
+      player2.anims.play("left2", true);
+    } else if (cursors.right.isDown) {
+      player.body.setVelocityX(190);
+      player.anims.play("right", true);
+      player2.body.setVelocityX(160);
+      player2.anims.play("right2", true);
+    } else {
+      player.body.setVelocityX(0);
+      player.anims.play("right", true);
+      player2.body.setVelocityX(0);
+      player2.anims.play("right2", true);
+    }
+    if (cursors.up.isDown && player2.body.touching.down) {
+      player.body.setVelocityY(-200);
+      player2.body.setVelocityY(-240);
+    } else {
+      player.body.setVelocityY(0);
+    }
+    this.socket.emit("estadoDoJogador", {
+      frame: player.anims.currentFrame.index,
+      x: player.body.x,
+      y: player.body.y,
+    });
+  } else if (jogador === 2) {
+    if (cursors.left.isDown) {
+      player.body.setVelocityX(-200);
+      player.anims.play("left", true);
+      player.body.setVelocityX(-200);
+      player2.anims.play("left2", true);
+    } else if (cursors.right.isDown) {
+      player.body.setVelocityX(190);
+      player.anims.play("right", true);
+      player2.body.setVelocityX(160);
+      player2.anims.play("right2", true);
+    } else {
+      player.body.setVelocityX(0);
+      player.anims.play("right", true);
+      player2.body.setVelocityX(0);
+      player2.anims.play("right2", true);
+    }
+    if (cursors.up.isDown && player2.body.touching.down) {
+      player.body.setVelocityY(-200);
+      player2.body.setVelocityY(-240);
+    } else {
+      player.body.setVelocityY(0);
+    }
 
-  if (up.isDown && player2.body.touching.down) {
-    player2.setVelocityY(-200);
-    player.setVelocityY(-240);
+    this.socket.emit("estadoDoJogador", {
+      frame: player2.anims.currentFrame.index,
+      x: player2.body.x,
+      y: player2.body.y,
+    });
   }
-
   if (che1 == true && che2 == true) {
     this.scene.start(cena4);
   }

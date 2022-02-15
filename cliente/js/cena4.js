@@ -166,7 +166,6 @@ cena4.create = function () {
   left = this.input.keyboard.addKey("A");
   right = this.input.keyboard.addKey("D");
 
-  
   this.socket = io();
 
   // Disparar evento quando jogador entrar na partida
@@ -175,7 +174,6 @@ cena4.create = function () {
   var socket = this.socket;
 
   this.socket.on("jogadores", function (jogadores) {
-
     if (jogadores.primeiro === self.socket.id) {
       jogador = 1;
       player.setBounce(0.2);
@@ -184,7 +182,7 @@ cena4.create = function () {
       physics.add.collider(player, spikes, hitSpike, null, this);
       physics.add.collider(player, button, hitButton, null, this);
       physics.add.overlap(player, chegada, hitChegada, null, this);
-      this.physics.add.overlap(player, key, hitKey, null, this);
+      physics.add.overlap(player, key, hitKey, null, this);
 
       //cameras.main.startFollow(player1);
 
@@ -202,7 +200,7 @@ cena4.create = function () {
       physics.add.collider(player2, spikes, hitSpike, null, this);
       physics.add.collider(player2, escada);
       physics.add.overlap(player2, chegada, hitChegada2, null, this);
-      this.physics.add.overlap(player2, key2, hitKey2, null, this);
+      physics.add.overlap(player2, key2, hitKey2, null, this);
 
       //cameras.main.startFollow(player2);
 
@@ -283,17 +281,9 @@ cena4.create = function () {
   });
 };
 
-};
-
 cena4.update = function () {
   if (gameOver) {
     restart.call(this);
-    /*this.physics.pause();
-    player.setTint(0xff0000);
-    player.anims.play(right);
-    player2.setTint(0xff0000);
-    player2.anims.play("right2");
-    //return; // trava tudo, slk*/
   }
 
   if (jogador === 1) {
@@ -309,7 +299,8 @@ cena4.update = function () {
     }
     if (cursors.up.isDown) {
       player.body.setVelocityY(-60);
-    } if (cursors.up.isDown && cursors.right.isDown){
+    }
+    if (cursors.up.isDown && cursors.right.isDown) {
       player.body.setVelocityY(-60);
       player.body.setVelocityX(300);
     }
@@ -331,7 +322,8 @@ cena4.update = function () {
     }
     if (cursors.up.isDown) {
       player2.body.setVelocityY(-60);
-    } if (up.isDown && right.isDown){
+    }
+    if (up.isDown && right.isDown) {
       player2.body.setVelocityY(-60);
       player2.body.setVelocityX(300);
     }

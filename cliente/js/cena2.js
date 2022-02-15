@@ -163,7 +163,7 @@ cena2.create = function () {
       physics.add.collider(player, spikes, hitSpike, null, this);
       physics.add.collider(player, button, hitButton, null, this);
       physics.add.overlap(player, chegada, hitChegada, null, this);
-      this.physics.add.collider(player, escada);
+      physics.add.collider(player, escada);
 
       //cameras.main.startFollow(player1);
 
@@ -265,12 +265,6 @@ cena2.create = function () {
 cena2.update = function () {
   if (gameOver) {
     restart.call(this);
-    /*this.physics.pause();
-    player.setTint(0xff0000);
-    player.anims.play(right);
-    player2.setTint(0xff0000);
-    player2.anims.play("right2");
-    //return; // trava tudo, slk*/
   }
 
   if (jogador === 1) {

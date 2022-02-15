@@ -233,6 +233,7 @@ cena1.create = function () {
       player.y = y;
     }
   });
+};
 
 cena1.update = function () {
   if (gameOver) {
