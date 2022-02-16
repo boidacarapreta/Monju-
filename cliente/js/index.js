@@ -13,8 +13,15 @@ var config = {
     default: "arcade",
     arcade: {
       gravity: { y: 300 },
-      debug: false,
+      debug: true,
     },
+  },
+  scale: {
+    mode: Phaser.Scale.FIT,
+    parent: "game",
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 1000,
+    height: 650,
   },
   scene: [cena1, cena2, cena3, cena4, cena5],
 };

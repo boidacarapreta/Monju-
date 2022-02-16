@@ -1,7 +1,7 @@
 import { cena2 } from "./cena2.js";
 var cena1 = new Phaser.Scene("Cena 1");
 
-var player;
+var player1;
 var player2;
 var che1 = false;
 var che2 = false;
@@ -35,19 +35,11 @@ cena1.preload = function () {
   this.load.image("chegada", "./assets/chegada.png");
   this.load.image("escada", "./assets/escada.png");
 
-  this.load.spritesheet("alienvd", "./assets/alienvd.png", {
+  this.load.spritesheet("alien-verde", "./assets/alien-verde.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-  this.load.spritesheet("alienve", "./assets/alienve.png", {
-    frameWidth: 32,
-    frameHeight: 48,
-  });
-  this.load.spritesheet("alienrd", "./assets/alienrd.png", {
-    frameWidth: 32,
-    frameHeight: 48,
-  });
-  this.load.spritesheet("alienre", "./assets/alienre.png", {
+  this.load.spritesheet("alien-rosa", "./assets/alien-rosa.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
@@ -70,35 +62,71 @@ cena1.create = function () {
   platforms.create(500, 325, "ground").setScale(1.2).refreshBody();
   platforms.create(500, 672, "ground").setScale(1.2).refreshBody();
 
-  player = this.physics.add.sprite(100, 130, "alienvd", "alienve");
-  player2 = this.physics.add.sprite(100, 530, "alienrd", "alienre");
+  player1 = this.physics.add.sprite(100, 130, "alien-verde");
+  player2 = this.physics.add.sprite(100, 530, "alien-rosa");
+
+  player1.body.setAllowGravity(false);
+  player2.body.setAllowGravity(false);
+
   button = this.physics.add.staticSprite(490, 285, "button");
 
   this.anims.create({
-    key: "left",
-    frames: this.anims.generateFrameNumbers("alienve", { start: 0, end: 8 }),
-    frameRate: 100,
+    key: "left1",
+    frames: this.anims.generateFrameNumbers("alien-verde", {
+      start: 0,
+      end: 8,
+    }),
+    frameRate: 10,
     repeat: -1,
   });
 
   this.anims.create({
-    key: "right",
-    frames: this.anims.generateFrameNumbers("alienvd", { start: 0, end: 8 }),
+    key: "right1",
+    frames: this.anims.generateFrameNumbers("alien-verde", {
+      start: 9,
+      end: 17,
+    }),
     frameRate: 10,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: "stopped1",
+    frames: this.anims.generateFrameNumbers("alien-verde", {
+      start: 16,
+      end: 17,
+    }),
+    frameRate: 2,
     repeat: -1,
   });
 
   this.anims.create({
     key: "left2",
-    frames: this.anims.generateFrameNumbers("alienre", { start: 0, end: 8 }),
-    frameRate: 100,
+    frames: this.anims.generateFrameNumbers("alien-rosa", {
+      start: 0,
+      end: 8,
+    }),
+    frameRate: 10,
     repeat: -1,
   });
 
   this.anims.create({
     key: "right2",
-    frames: this.anims.generateFrameNumbers("alienrd", { start: 0, end: 8 }),
+    frames: this.anims.generateFrameNumbers("alien-rosa", {
+      start: 9,
+      end: 17,
+    }),
     frameRate: 10,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: "stopped2",
+    frames: this.anims.generateFrameNumbers("alien-rosa", {
+      start: 16,
+      end: 17,
+    }),
+    frameRate: 2,
     repeat: -1,
   });
 
@@ -133,60 +161,60 @@ cena1.create = function () {
   this.socket.on("jogadores", function (jogadores) {
     if (jogadores.primeiro === self.socket.id) {
       jogador = 1;
-      player.setBounce(0.2);
-      player.setCollideWorldBounds(true);
-      physics.add.collider(player, platforms);
-      physics.add.collider(player, spikes, hitSpike, null, this);
-      physics.add.collider(player, button, hitButton, null, this);
-      physics.add.overlap(player, chegada, hitChegada, null, this);
+      player1.body.setAllowGravity(true);
+      player1.body.setGravityY(300);
+      player1.setBounce(0.2);
+      player1.setCollideWorldBounds(true);
+      physics.add.collider(player1, platforms, null, null, this);
+      physics.add.collider(player1, spikes, hitSpike, null, this);
+      physics.add.collider(player1, button, hitButton, null, this);
+      physics.add.overlap(player1, chegada, hitChegada, null, this);
 
-      //cameras.main.startFollow(player1);
-
-      navigator.mediaDevices
-        .getUserMedia({ video: false, audio: true })
-        .then((stream) => {
-          midias = stream;
-        })
-        .catch((error) => console.log(error));
+      // navigator.mediaDevices
+      //   .getUserMedia({ video: false, audio: true })
+      //   .then((stream) => {
+      //     midias = stream;
+      //   })
+      //   .catch((error) => console.log(error));
     } else if (jogadores.segundo === self.socket.id) {
       jogador = 2;
+      player2.body.setAllowGravity(true);
+      player2.body.setGravityY(300);
       player2.setBounce(0.2);
       player2.setCollideWorldBounds(true);
-      physics.add.collider(player2, platforms);
+      physics.add.collider(player2, platforms, null, null, this);
       physics.add.collider(player2, spikes, hitSpike, null, this);
-      physics.add.collider(player2, escada);
-      physics.add.overlap(player2, chegada, hitChegada2, null, this);
+      physics.add.collider(player2, button, hitButton, null, this);
+      physics.add.overlap(player2, chegada, hitChegada, null, this);
 
-      //cameras.main.startFollow(player2);
-
-      navigator.mediaDevices
-        .getUserMedia({ video: false, audio: true })
-        .then((stream) => {
-          midias = stream;
-          localConnection = new RTCPeerConnection(ice_servers);
-          midias
-            .getTracks()
-            .forEach((track) => localConnection.addTrack(track, midias));
-          localConnection.onicecandidate = ({ candidate }) => {
-            candidate &&
-              socket.emit("candidate", jogadores.primeiro, candidate);
-          };
-          console.log(midias);
-          localConnection.ontrack = ({ streams: [midias] }) => {
-            audio.srcObject = midias;
-          };
-          localConnection
-            .createOffer()
-            .then((offer) => localConnection.setLocalDescription(offer))
-            .then(() => {
-              socket.emit(
-                "offer",
-                jogadores.primeiro,
-                localConnection.localDescription
-              );
-            });
-        })
-        .catch((error) => console.log(error));
+      // navigator.mediaDevices
+      //   .getUserMedia({ video: false, audio: true })
+      //   .then((stream) => {
+      //     midias = stream;
+      //     localConnection = new RTCPeerConnection(ice_servers);
+      //     midias
+      //       .getTracks()
+      //       .forEach((track) => localConnection.addTrack(track, midias));
+      //     localConnection.onicecandidate = ({ candidate }) => {
+      //       candidate &&
+      //         socket.emit("candidate", jogadores.primeiro, candidate);
+      //     };
+      //     console.log(midias);
+      //     localConnection.ontrack = ({ streams: [midias] }) => {
+      //       audio.srcObject = midias;
+      //     };
+      //     localConnection
+      //       .createOffer()
+      //       .then((offer) => localConnection.setLocalDescription(offer))
+      //       .then(() => {
+      //         socket.emit(
+      //           "offer",
+      //           jogadores.primeiro,
+      //           localConnection.localDescription
+      //         );
+      //       });
+      //   })
+      //   .catch((error) => console.log(error));
     }
 
     // Os dois jogadores estão conectados
@@ -213,11 +241,11 @@ cena1.create = function () {
       });
   });
 
-  socket.on("answer", (description) => {
+  this.socket.on("answer", (description) => {
     localConnection.setRemoteDescription(description);
   });
 
-  socket.on("candidate", (candidate) => {
+  this.socket.on("candidate", (candidate) => {
     const conn = localConnection || remoteConnection;
     conn.addIceCandidate(new RTCIceCandidate(candidate));
   });
@@ -228,9 +256,9 @@ cena1.create = function () {
       player2.x = x;
       player2.y = y;
     } else if (jogador === 2) {
-      player.setFrame(frame);
-      player.x = x;
-      player.y = y;
+      player1.setFrame(frame);
+      player1.x = x;
+      player1.y = y;
     }
   });
 };
@@ -242,24 +270,22 @@ cena1.update = function () {
 
   if (jogador === 1) {
     if (cursors.left.isDown) {
-      player.body.setVelocityX(-160);
-      player.anims.play("left", true);
+      player1.body.setVelocityX(-160);
+      player1.anims.play("left1", true);
     } else if (cursors.right.isDown) {
-      player.body.setVelocityX(160);
-      player.anims.play("right", true);
+      player1.body.setVelocityX(160);
+      player1.anims.play("right1", true);
     } else {
-      player.body.setVelocityX(0);
-      player.anims.play("right", true);
+      player1.body.setVelocityX(0);
+      player1.anims.play("stopped1", true);
     }
-    if (cursors.up.isDown && player.body.touching.down) {
-      player.body.setVelocityY(-260);
-    } else {
-      player.body.setVelocityY(0);
-    }
+    if (cursors.up.isDown && player1.body.blocked.down) {
+      player1.body.setVelocityY(-400);
+    } 
     this.socket.emit("estadoDoJogador", {
-      frame: player.anims.currentFrame.index,
-      x: player.body.x,
-      y: player.body.y,
+      frame: player1.anims.getFrameName(),
+      x: player1.body.x + 16,
+      y: player1.body.y + 24,
     });
   } else if (jogador === 2) {
     if (cursors.left.isDown) {
@@ -270,30 +296,29 @@ cena1.update = function () {
       player2.anims.play("right2", true);
     } else {
       player2.body.setVelocityX(0);
-      player2.anims.play("right2", true);
+      player2.anims.play("stopped2", true);
     }
-    if (cursors.up.isDown && player2.body.touching.down) {
-      player2.body.setVelocityY(-260);
-    } else {
-      player2.body.setVelocityY(0);
-    }
+    if (cursors.up.isDown && player2.body.blocked.down) {
+      player2.body.setVelocityY(-400);
+    } 
     this.socket.emit("estadoDoJogador", {
-      frame: player2.anims.currentFrame.index,
-      x: player2.body.x,
-      y: player2.body.y,
+      frame: player2.anims.getFrameName(),
+      x: player2.body.x + 16,
+      y: player2.body.y + 24,
     });
   }
+
   if (che1 == true && che2 == true) {
     this.scene.start(cena2);
   }
 };
 
-function hitSpike(player, spikes) {
+function hitSpike(player1, spikes) {
   this.physics.pause();
   death.play();
 
-  player.setTint(0xff0000);
-  player.anims.play(right);
+  player1.setTint(0xff0000);
+  player1.anims.play(right);
   player2.setTint(0xff0000);
   player2.anims.play("right2");
   gameOver = true;
@@ -312,7 +337,7 @@ function hitButton(player, button) {
   }
 }
 
-function hitChegada(player, chegada) {
+function hitChegada(player1, chegada) {
   che1 = true;
 }
 

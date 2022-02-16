@@ -35,7 +35,7 @@ cena2.preload = function () {
   this.load.image("spike", "./assets/spykes.png");
   this.load.image("escada", "./assets/escada.png");
   this.load.image("chegada", "./assets/chegada.png");
-  
+
   this.load.spritesheet("alienvd", "./assets/alienvd.png", {
     frameWidth: 32,
     frameHeight: 48,
@@ -145,7 +145,6 @@ cena2.create = function () {
   right = this.input.keyboard.addKey("D");
   teclaf = this.input.keyboard.addKey("F");
 
-  
   this.socket = io();
 
   // Disparar evento quando jogador entrar na partida
@@ -154,7 +153,6 @@ cena2.create = function () {
   var socket = this.socket;
 
   this.socket.on("jogadores", function (jogadores) {
-
     if (jogadores.primeiro === self.socket.id) {
       jogador = 1;
       player.setBounce(0.2);
@@ -260,7 +258,6 @@ cena2.create = function () {
     }
   });
 };
-};
 
 cena2.update = function () {
   if (gameOver) {
@@ -311,6 +308,7 @@ cena2.update = function () {
       y: player2.body.y,
     });
   }
+};
 
 function hitChegada(player, chegada) {
   che1 = true;
