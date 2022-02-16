@@ -9,7 +9,7 @@
     },
     "description": "Servidor de jogo Web multijogador",
     "engines": {
-        "node": "16.x"
+        "node": ">=16.x"
     },
     "homepage": "https://github.com/ramolia/Monju-#readme",
     "keywords": [
