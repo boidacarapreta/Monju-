@@ -281,7 +281,7 @@ cena1.update = function () {
     }
     if (cursors.up.isDown && player1.body.blocked.down) {
       player1.body.setVelocityY(-400);
-    } 
+    }
     this.socket.emit("estadoDoJogador", {
       frame: player1.anims.getFrameName(),
       x: player1.body.x + 16,
@@ -300,7 +300,7 @@ cena1.update = function () {
     }
     if (cursors.up.isDown && player2.body.blocked.down) {
       player2.body.setVelocityY(-400);
-    } 
+    }
     this.socket.emit("estadoDoJogador", {
       frame: player2.anims.getFrameName(),
       x: player2.body.x + 16,

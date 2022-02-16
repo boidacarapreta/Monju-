@@ -222,26 +222,27 @@ cena3.update = function () {
 
   if (jogador === 1) {
     if (cursors.left.isDown) {
-      player.body.setVelocityX(-200);
-      player.anims.play("left", true);
-      player.body.setVelocityX(-200);
+      player1.body.setVelocityX(-200);
+      player1.anims.play("left", true);
+      player2.body.setVelocityX(-200);
       player2.anims.play("left2", true);
     } else if (cursors.right.isDown) {
-      player.body.setVelocityX(190);
-      player.anims.play("right", true);
+      player1.body.setVelocityX(190);
+      player1.anims.play("right", true);
       player2.body.setVelocityX(160);
       player2.anims.play("right2", true);
     } else {
-      player.body.setVelocityX(0);
-      player.anims.play("right", true);
+      player1.body.setVelocityX(0);
+      player1.anims.play("right", true);
       player2.body.setVelocityX(0);
       player2.anims.play("right2", true);
     }
     if (cursors.up.isDown && player2.body.touching.down) {
-      player.body.setVelocityY(-200);
+      player1.body.setVelocityY(-200);
       player2.body.setVelocityY(-240);
     } else {
-      player.body.setVelocityY(0);
+      player1.body.setVelocityY(0);
+      player2.body.setVelocityY(0);
     }
     this.socket.emit("estadoDoJogador", {
       frame: player.anims.currentFrame.index,
