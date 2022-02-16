@@ -1,7 +1,7 @@
 import { cena5 } from "./cena5.js";
 var cena4 = new Phaser.Scene("Cena 4");
 
-var player;
+var player1;
 var player2;
 var che1 = false;
 var che2 = false;
@@ -42,19 +42,11 @@ cena4.preload = function () {
   this.load.image("spikesl", "./assets/spykesl.png");
   this.load.image("chegada", "./assets/chegada.png");
   this.load.image("key", "./assets/key.png");
-  this.load.spritesheet("alienvd", "./assets/alienvd.png", {
+  this.load.spritesheet("alien-verde", "./assets/alien-verde.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-  this.load.spritesheet("alienve", "./assets/alienve.png", {
-    frameWidth: 32,
-    frameHeight: 48,
-  });
-  this.load.spritesheet("alienrd", "./assets/alienrd.png", {
-    frameWidth: 32,
-    frameHeight: 48,
-  });
-  this.load.spritesheet("alienre", "./assets/alienre.png", {
+  this.load.spritesheet("alien-rosa", "./assets/alien-rosa.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
@@ -124,39 +116,69 @@ cena4.create = function () {
   chegada.create(940, 269, "chegada").refreshBody();
   chegada.create(940, 615, "chegada").refreshBody();
 
-  player = this.physics.add.sprite(35, 265, "alienvd", "alienve");
+  player1 = this.physics.add.sprite(35, 265, "alienvd", "alienve");
   player2 = this.physics.add.sprite(35, 610, "alienrd", "alienre");
-
-  player.setBounce(0.2);
-  player.setCollideWorldBounds(true);
-  player2.setBounce(0.2);
-  player2.setCollideWorldBounds(true);
+  
+  player1.body.setAllowGravity(false);
+  player2.body.setAllowGravity(false);
 
   this.anims.create({
-    key: "left",
-    frames: this.anims.generateFrameNumbers("alienve", { start: 0, end: 8 }),
-    frameRate: 100,
+    key: "left1",
+    frames: this.anims.generateFrameNumbers("alien-verde", {
+      start: 0,
+      end: 8,
+    }),
+    frameRate: 10,
     repeat: -1,
   });
 
   this.anims.create({
-    key: "right",
-    frames: this.anims.generateFrameNumbers("alienvd", { start: 0, end: 8 }),
+    key: "right1",
+    frames: this.anims.generateFrameNumbers("alien-verde", {
+      start: 9,
+      end: 17,
+    }),
     frameRate: 10,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: "stopped1",
+    frames: this.anims.generateFrameNumbers("alien-verde", {
+      start: 16,
+      end: 17,
+    }),
+    frameRate: 2,
     repeat: -1,
   });
 
   this.anims.create({
     key: "left2",
-    frames: this.anims.generateFrameNumbers("alienre", { start: 0, end: 8 }),
-    frameRate: 100,
+    frames: this.anims.generateFrameNumbers("alien-rosa", {
+      start: 0,
+      end: 8,
+    }),
+    frameRate: 10,
     repeat: -1,
   });
 
   this.anims.create({
     key: "right2",
-    frames: this.anims.generateFrameNumbers("alienrd", { start: 0, end: 8 }),
+    frames: this.anims.generateFrameNumbers("alien-rosa", {
+      start: 9,
+      end: 17,
+    }),
     frameRate: 10,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: "stopped2",
+    frames: this.anims.generateFrameNumbers("alien-rosa", {
+      start: 16,
+      end: 17,
+    }),
+    frameRate: 2,
     repeat: -1,
   });
 
@@ -274,9 +296,9 @@ cena4.create = function () {
       player2.x = x;
       player2.y = y;
     } else if (jogador === 2) {
-      player.setFrame(frame);
-      player.x = x;
-      player.y = y;
+      player1.setFrame(frame);
+      player1.x = x;
+      player1.y = y;
     }
   });
 };
@@ -288,26 +310,26 @@ cena4.update = function () {
 
   if (jogador === 1) {
     if (cursors.left.isDown) {
-      player.body.setVelocityX(-10);
-      player.anims.play("left", true);
+      player1.body.setVelocityX(-10);
+      player1.anims.play("left", true);
     } else if (cursors.right.isDown) {
-      player.body.setVelocityX(10);
-      player.anims.play("right", true);
+      player1.body.setVelocityX(10);
+      player1.anims.play("right", true);
     } else {
-      player.body.setVelocityX(0);
-      player.anims.play("right", true);
+      player1.body.setVelocityX(0);
+      player1.anims.play("right", true);
     }
     if (cursors.up.isDown) {
-      player.body.setVelocityY(-60);
+      player1.body.setVelocityY(-60);
     }
     if (cursors.up.isDown && cursors.right.isDown) {
-      player.body.setVelocityY(-60);
-      player.body.setVelocityX(300);
+      player1.body.setVelocityY(-60);
+      player1.body.setVelocityX(300);
     }
     this.socket.emit("estadoDoJogador", {
       frame: player.anims.currentFrame.index,
-      x: player.body.x,
-      y: player.body.y,
+      x: player1.body.x,
+      y: player1.body.y,
     });
   } else if (jogador === 2) {
     if (cursors.left.isDown) {
