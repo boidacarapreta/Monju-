@@ -178,10 +178,6 @@ cena1.create = function () {
       //   .catch((error) => console.log(error));
     } else if (jogadores.segundo === self.socket.id) {
       jogador = 2;
-      player2.body.setAllowGravity(true);
-      player2.body.setGravityY(300);
-      player2.setBounce(0.2);
-      player2.setCollideWorldBounds(true);
       physics.add.collider(player2, platforms, null, null, this);
       physics.add.collider(player2, spikes, hitSpike, null, this);
       physics.add.collider(player2, button, hitButton, null, this);
@@ -250,17 +246,14 @@ cena1.create = function () {
     conn.addIceCandidate(new RTCIceCandidate(candidate));
   });
 
-  this.socket.on("desenharOutroJogador", ({ frame, x, y }) => {
-    if (jogador === 1) {
-      player2.setFrame(frame);
-      player2.x = x;
-      player2.y = y;
-    } else if (jogador === 2) {
-      player1.setFrame(frame);
-      player1.x = x;
-      player1.y = y;
-    }
-  });
+  this.socket.on("desenharOutroJogador", ({ jogador1, jogador2 }) => {
+    player1.setFrame(jogador1.frame);
+    player1.x = jogador1.x;
+    player1.y = jogador1.y;
+    player2.setFrame(jogador2.frame);
+    player2.x = jogador2.x;
+    player2.y = jogador2.y;
+  })
 };
 
 cena1.update = function () {
@@ -282,30 +275,24 @@ cena1.update = function () {
     if (cursors.up.isDown && player1.body.blocked.down) {
       player1.body.setVelocityY(-400);
     }
+
+    player2.setFrame(player1.anims.getFrameName());
+    player2.x = player1.body.x + 16;
+    player2.y = player1.body.y + 372;
+
     this.socket.emit("estadoDoJogador", {
-      frame: player1.anims.getFrameName(),
-      x: player1.body.x + 16,
-      y: player1.body.y + 24,
+      jogador1: {
+        frame: player1.anims.getFrameName(),
+        x: player1.body.x + 16,
+        y: player1.body.y + 24,
+      },
+      jogador2: {
+        frame: player1.anims.getFrameName(),
+        x: player1.body.x + 16,
+        y: player1.body.y + 372,
+      },
     });
   } else if (jogador === 2) {
-    if (cursors.left.isDown) {
-      player2.body.setVelocityX(-160);
-      player2.anims.play("left2", true);
-    } else if (cursors.right.isDown) {
-      player2.body.setVelocityX(160);
-      player2.anims.play("right2", true);
-    } else {
-      player2.body.setVelocityX(0);
-      player2.anims.play("stopped2", true);
-    }
-    if (cursors.up.isDown && player2.body.blocked.down) {
-      player2.body.setVelocityY(-400);
-    }
-    this.socket.emit("estadoDoJogador", {
-      frame: player2.anims.getFrameName(),
-      x: player2.body.x + 16,
-      y: player2.body.y + 24,
-    });
   }
 
   if (che1 == true && che2 == true) {
