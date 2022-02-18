@@ -223,6 +223,7 @@ cena4.create = function () {
       physics.add.collider(player1, spikes, hitSpike, null, this);
       physics.add.collider(player1, button, hitButton, null, this);
       physics.add.overlap(player1, chegada, hitChegada, null, this);
+      physics.add.overlap(player1, key, hitKey, null, this);
 
       // navigator.mediaDevices
       //   .getUserMedia({ video: false, audio: true })
@@ -240,6 +241,7 @@ cena4.create = function () {
       physics.add.collider(player2, spikes, hitSpike, null, this);
       physics.add.collider(player2, button, hitButton, null, this);
       physics.add.overlap(player2, chegada, hitChegada, null, this);
+      physics.add.overlap(player2, key2, hitKey, null, this);
 
       // navigator.mediaDevices
       //   .getUserMedia({ video: false, audio: true })
@@ -317,7 +319,7 @@ cena4.create = function () {
   });
 };
 
-cena1.update = function () {
+cena4.update = function () {
   if (gameOver) {
     restart.call(this);
   }
@@ -363,7 +365,7 @@ cena1.update = function () {
   }
 
   if (che1 == true && che2 == true) {
-    this.scene.start(cena2);
+    this.scene.start(cena5);
   }
 };
 
