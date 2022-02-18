@@ -74,8 +74,7 @@ cena3.create = function () {
     platforms.create(255, 573, "escada").refreshBody();
 
   platforms.create(500, 147, "escada").setScale(0.75).refreshBody() &&
-    platforms.create(420, 500, "escada").setScale(0.7).refreshBody() &&
-    platforms.create(550, 500, "escada").setScale(0.7).refreshBody();
+    platforms.create(500, 500, "escada").setScale(0.75).refreshBody();
 
   platforms.create(700, 251, "escadav").setScale(1).refreshBody() &&
     platforms.create(700, 600, "escadav").setScale(1).refreshBody();
@@ -90,7 +89,7 @@ cena3.create = function () {
   player2 = this.physics.add.sprite(100, 530, "alienrd", "alienre");
 
   player1.body.setAllowGravity(false);
-  player2.body.setAllowGravity(false);  
+  player2.body.setAllowGravity(false);
 
   cursors = this.input.keyboard.createCursorKeys();
   up = this.input.keyboard.addKey("W");
@@ -127,7 +126,7 @@ cena3.create = function () {
         .catch((error) => console.log(error));
     } else if (jogadores.segundo === self.socket.id) {
       jogador = 2;
-     player2.body.setAllowGravity(true);
+      player2.body.setAllowGravity(true);
       player2.body.setGravityY(300);
       player2.setBounce(0.2);
       player2.setCollideWorldBounds(true);

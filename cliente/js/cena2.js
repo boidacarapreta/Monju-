@@ -84,7 +84,7 @@ cena2.create = function () {
   chegada.create(940, 269, "chegada");
   chegada.create(940, 615, "chegada");
 
-  player = this.physics.add.sprite(100, 130, "alienvd", "alienve");
+  player1 = this.physics.add.sprite(100, 130, "alienvd", "alienve");
   player2 = this.physics.add.sprite(100, 530, "alienrd", "alienre");
   
   player1.body.setAllowGravity(false);
