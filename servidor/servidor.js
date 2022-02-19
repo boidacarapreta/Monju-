@@ -48,6 +48,14 @@ io.on("connection", function (socket) {
   socket.on("estadoDoJogador", function (estado) {
     socket.broadcast.emit("desenharOutroJogador", estado);
   });
+
+  socket.on("criarChegada", function (estado) {
+    socket.broadcast.emit("criarChegada", estado);
+  });
+
+  socket.on("chegada", function (estado) {
+    socket.broadcast.emit("chegada", estado);
+  });
 });
 
 app.use(express.static("../cliente"));
