@@ -1,4 +1,4 @@
-import { cena2 } from "./cena2.js";
+import { cena5 } from "./cena5.js";
 var cena1 = new Phaser.Scene("Cena 1");
 
 var player1;
@@ -356,7 +356,7 @@ cena1.update = function () {
   });
 
   if (che1 == true && che2 == true) {
-    this.scene.start(cena2);
+    this.scene.start(cena5);
   }
 };
 

@@ -12,7 +12,7 @@ cena5.create = function () {
   button.on(
     "pointerdown",
     function () {
-      this.scene.start(cena1);
+      location.reload();
     },
     this
   );
