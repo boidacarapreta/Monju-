@@ -53,7 +53,6 @@ cena1.preload = function () {
 
 cena1.create = function () {
   criarChegada = false;
-
   this.add.image(500, 325, "background");
 
   death = this.sound.add("death");
@@ -64,6 +63,8 @@ cena1.create = function () {
 
   platforms.create(500, 325, "ground").setScale(1.2).refreshBody();
   platforms.create(500, 672, "ground").setScale(1.2).refreshBody();
+  spikes.create(700, 280, "spike").setScale(0.3).refreshBody();
+  spikes.create(700, 630, "spike").setScale(0.3).refreshBody();
 
   player1 = this.physics.add.sprite(100, 130, "alien-verde");
   player2 = this.physics.add.sprite(100, 530, "alien-rosa");
@@ -168,6 +169,7 @@ cena1.create = function () {
       player1.body.setGravityY(300);
       player1.setBounce(0.2);
       player1.setCollideWorldBounds(true);
+      physics.add.collider(player1, escada, null, null, this);
       physics.add.collider(player1, platforms, null, null, this);
       physics.add.collider(player1, spikes, hitSpike, null, this);
       physics.add.collider(player1, button, hitButton, null, this);
@@ -181,7 +183,12 @@ cena1.create = function () {
       //   .catch((error) => console.log(error));
     } else if (jogadores.segundo === self.socket.id) {
       jogador = 2;
+      player2.body.setAllowGravity(true);
+      player2.body.setGravityY(300);
+      player2.setBounce(0.2);
+      player2.setCollideWorldBounds(true);
       physics.add.collider(player2, platforms, null, null, this);
+      physics.add.collider(player2, escada, null, null, this);
       physics.add.collider(player2, spikes, hitSpike, null, this);
       physics.add.collider(player2, button, hitButton, null, this);
       physics.add.overlap(player2, chegada, hitChegada2, null, this);
@@ -249,13 +256,16 @@ cena1.create = function () {
     conn.addIceCandidate(new RTCIceCandidate(candidate));
   });
 
-  this.socket.on("desenharOutroJogador", ({ jogador1, jogador2 }) => {
-    player1.setFrame(jogador1.frame);
-    player1.x = jogador1.x;
-    player1.y = jogador1.y;
-    player2.setFrame(jogador2.frame);
-    player2.x = jogador2.x;
-    player2.y = jogador2.y;
+  this.socket.on("desenharOutroJogador", ({ frame, x, y }) => {
+    if (jogador === 1) {
+      player2.setFrame(frame);
+      player2.x = x;
+      player2.y = y;
+    } else if (jogador === 2) {
+      player1.setFrame(frame);
+      player1.x = x;
+      player1.y = y;
+    }
   });
 
   this.socket.on("criarChegada", ({ criarChegada }) => {
@@ -266,8 +276,13 @@ cena1.create = function () {
       escada.create(600, 550, "escada").setScale(0.8).refreshBody();
       escada.create(780, 500, "escada").setScale(0.8).refreshBody();
       escada.create(940, 433, "escada").setScale(0.8).refreshBody();
+
+      escada.create(600, 200, "escada").setScale(0.8).refreshBody();
+      escada.create(780, 150, "escada").setScale(0.8).refreshBody();
+      escada.create(940, 87, "escada").setScale(0.8).refreshBody();
+
       chegada.create(940, 269, "chegada").refreshBody();
-      chegada.create(940, 600, "chegada").refreshBody();
+      chegada.create(940, 609, "chegada").refreshBody();
     }
   });
 
@@ -279,7 +294,14 @@ cena1.create = function () {
 
 cena1.update = function () {
   if (gameOver) {
-    restart.call(this);
+    this.physics.pause();
+    death.play();
+
+    player1.setTint(0xff0000);
+    player1.anims.play(right);
+    player2.setTint(0xff0000);
+    player2.anims.play("right2");
+    //restart.call(this);
   }
 
   if (jogador === 1) {
@@ -296,22 +318,29 @@ cena1.update = function () {
     if (cursors.up.isDown && player1.body.blocked.down) {
       player1.body.setVelocityY(-400);
     }
-
-    player2.setFrame(player1.anims.getFrameName());
-    player2.x = player1.body.x + 16;
-    player2.y = player1.body.y + 372;
-
     this.socket.emit("estadoDoJogador", {
-      jogador1: {
-        frame: player1.anims.getFrameName(),
-        x: player1.body.x + 16,
-        y: player1.body.y + 24,
-      },
-      jogador2: {
-        frame: player1.anims.getFrameName(),
-        x: player1.body.x + 16,
-        y: player1.body.y + 372,
-      },
+      frame: player1.anims.getFrameName(),
+      x: player1.body.x + 16,
+      y: player1.body.y + 24,
+    });
+  } else if (jogador === 2) {
+    if (cursors.left.isDown) {
+      player2.body.setVelocityX(-160);
+      player2.anims.play("left2", true);
+    } else if (cursors.right.isDown) {
+      player2.body.setVelocityX(160);
+      player2.anims.play("right2", true);
+    } else {
+      player2.body.setVelocityX(0);
+      player2.anims.play("stopped2", true);
+    }
+    if (cursors.up.isDown && player2.body.blocked.down) {
+      player2.body.setVelocityY(-400);
+    }
+    this.socket.emit("estadoDoJogador", {
+      frame: player2.anims.getFrameName(),
+      x: player2.body.x + 16,
+      y: player2.body.y + 24,
     });
   }
 
@@ -332,13 +361,6 @@ cena1.update = function () {
 };
 
 function hitSpike(player1, spikes) {
-  this.physics.pause();
-  death.play();
-
-  player1.setTint(0xff0000);
-  player1.anims.play(right);
-  player2.setTint(0xff0000);
-  player2.anims.play("right2");
   gameOver = true;
 }
 
@@ -350,8 +372,13 @@ function hitButton(player, button) {
     escada.create(600, 550, "escada").setScale(0.8).refreshBody();
     escada.create(780, 500, "escada").setScale(0.8).refreshBody();
     escada.create(940, 433, "escada").setScale(0.8).refreshBody();
-    chegada.create(940, 269, "chegada").refreshBody();
-    chegada.create(940, 609, "chegada").refreshBody();
+
+    escada.create(600, 200, "escada").setScale(0.8).refreshBody();
+    escada.create(780, 150, "escada").setScale(0.8).refreshBody();
+    escada.create(940, 87, "escada").setScale(0.8).refreshBody();
+
+    chegada.create(940, 39, "chegada").refreshBody();
+    chegada.create(940, 385, "chegada").refreshBody();
     criarChegada = true;
   }
 }
@@ -365,7 +392,7 @@ function hitChegada2(player2, chegada) {
 }
 
 function restart() {
-  this.input.on("pointerdown", () => this.scene.start("Cena 1"));
+  //this.input.on("pointerdown", () => this.scene.start("Cena 1"));
   //this.input.on("pointerdown", () => this.scene.restart());
 }
 
