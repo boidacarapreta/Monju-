@@ -35,6 +35,7 @@ cena1.preload = function () {
   this.load.image("spike", "./assets/spykes.png");
   this.load.image("chegada", "./assets/chegada.png");
   this.load.image("escada", "./assets/escada.png");
+  this.load.image("restart", "./assets/restart.png");
 
   this.load.spritesheet("alien-verde", "./assets/alien-verde.png", {
     frameWidth: 32,
@@ -193,34 +194,34 @@ cena1.create = function () {
       physics.add.collider(player2, button, hitButton, null, this);
       physics.add.overlap(player2, chegada, hitChegada2, null, this);
 
-      // navigator.mediaDevices
-      //   .getUserMedia({ video: false, audio: true })
-      //   .then((stream) => {
-      //     midias = stream;
-      //     localConnection = new RTCPeerConnection(ice_servers);
-      //     midias
-      //       .getTracks()
-      //       .forEach((track) => localConnection.addTrack(track, midias));
-      //     localConnection.onicecandidate = ({ candidate }) => {
-      //       candidate &&
-      //         socket.emit("candidate", jogadores.primeiro, candidate);
-      //     };
-      //     console.log(midias);
-      //     localConnection.ontrack = ({ streams: [midias] }) => {
-      //       audio.srcObject = midias;
-      //     };
-      //     localConnection
-      //       .createOffer()
-      //       .then((offer) => localConnection.setLocalDescription(offer))
-      //       .then(() => {
-      //         socket.emit(
-      //           "offer",
-      //           jogadores.primeiro,
-      //           localConnection.localDescription
-      //         );
-      //       });
-      //   })
-      //   .catch((error) => console.log(error));
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+          localConnection = new RTCPeerConnection(ice_servers);
+          midias
+            .getTracks()
+            .forEach((track) => localConnection.addTrack(track, midias));
+          localConnection.onicecandidate = ({ candidate }) => {
+            candidate &&
+              socket.emit("candidate", jogadores.primeiro, candidate);
+          };
+          console.log(midias);
+          localConnection.ontrack = ({ streams: [midias] }) => {
+            audio.srcObject = midias;
+          };
+          localConnection
+            .createOffer()
+            .then((offer) => localConnection.setLocalDescription(offer))
+            .then(() => {
+              socket.emit(
+                "offer",
+                jogadores.primeiro,
+                localConnection.localDescription
+              );
+            });
+        })
+        .catch((error) => console.log(error));
     }
 
     // Os dois jogadores estão conectados
@@ -294,9 +295,17 @@ cena1.create = function () {
 
 cena1.update = function () {
   if (gameOver) {
-    this.physics.pause();
-    death.play();
+    var restartbutton = this.add.image(500, 325, "restart", 0).setInteractive();
 
+    restartbutton.on(
+      "pointerdown",
+      function () {
+        location.reload();
+      },
+      this
+    );
+    death.play();
+    this.physics.pause();
     player1.setTint(0xff0000);
     player1.anims.play(right);
     player2.setTint(0xff0000);
@@ -391,9 +400,9 @@ function hitChegada2(player2, chegada) {
   che2 = true;
 }
 
-function restart() {
-  //this.input.on("pointerdown", () => this.scene.start("Cena 1"));
-  //this.input.on("pointerdown", () => this.scene.restart());
-}
+//function restart() {
+//this.input.on("pointerdown", () => this.scene.start("Cena 2"));
+//this.input.on("pointerdown", () => this.scene.restart());
+//}
 
 export { cena1 };
