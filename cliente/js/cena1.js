@@ -176,12 +176,12 @@ cena1.create = function () {
       physics.add.collider(player1, button, hitButton, null, this);
       physics.add.overlap(player1, chegada, hitChegada, null, this);
 
-      // navigator.mediaDevices
-      //   .getUserMedia({ video: false, audio: true })
-      //   .then((stream) => {
-      //     midias = stream;
-      //   })
-      //   .catch((error) => console.log(error));
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+        })
+        .catch((error) => console.log(error));
     } else if (jogadores.segundo === self.socket.id) {
       jogador = 2;
       player2.body.setAllowGravity(true);
@@ -282,8 +282,8 @@ cena1.create = function () {
       escada.create(780, 150, "escada").setScale(0.8).refreshBody();
       escada.create(940, 87, "escada").setScale(0.8).refreshBody();
 
-      chegada.create(940, 269, "chegada").refreshBody();
-      chegada.create(940, 609, "chegada").refreshBody();
+      chegada.create(940, 39, "chegada").refreshBody();
+      chegada.create(940, 385, "chegada").refreshBody();
     }
   });
 
