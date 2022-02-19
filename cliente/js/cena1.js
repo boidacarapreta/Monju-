@@ -5,6 +5,7 @@ var player1;
 var player2;
 var che1 = false;
 var che2 = false;
+var criarChegada;
 var chegada;
 var escada;
 var cursors;
@@ -51,6 +52,8 @@ cena1.preload = function () {
 };
 
 cena1.create = function () {
+  criarChegada = false;
+
   this.add.image(500, 325, "background");
 
   death = this.sound.add("death");
@@ -181,7 +184,7 @@ cena1.create = function () {
       physics.add.collider(player2, platforms, null, null, this);
       physics.add.collider(player2, spikes, hitSpike, null, this);
       physics.add.collider(player2, button, hitButton, null, this);
-      physics.add.overlap(player2, chegada, hitChegada, null, this);
+      physics.add.overlap(player2, chegada, hitChegada2, null, this);
 
       // navigator.mediaDevices
       //   .getUserMedia({ video: false, audio: true })
@@ -253,7 +256,25 @@ cena1.create = function () {
     player2.setFrame(jogador2.frame);
     player2.x = jogador2.x;
     player2.y = jogador2.y;
-  })
+  });
+
+  this.socket.on("criarChegada", ({ criarChegada }) => {
+    if (criarChegada) {
+      button.anims.play("on");
+      ativar = true;
+
+      escada.create(600, 550, "escada").setScale(0.8).refreshBody();
+      escada.create(780, 500, "escada").setScale(0.8).refreshBody();
+      escada.create(940, 433, "escada").setScale(0.8).refreshBody();
+      chegada.create(940, 269, "chegada").refreshBody();
+      chegada.create(940, 600, "chegada").refreshBody();
+    }
+  });
+
+  this.socket.on("chegada", ({ che1remoto, che2remoto }) => {
+    che1 = che1 || che1remoto;
+    che2 = che2 || che2remoto;
+  });
 };
 
 cena1.update = function () {
@@ -292,8 +313,18 @@ cena1.update = function () {
         y: player1.body.y + 372,
       },
     });
-  } else if (jogador === 2) {
   }
+
+  if (criarChegada === true) {
+    this.socket.emit("criarChegada", {
+      criarChegada: true,
+    });
+  }
+
+  this.socket.emit("chegada", {
+    che1remoto: che1,
+    che2remoto: che2,
+  });
 
   if (che1 == true && che2 == true) {
     this.scene.start(cena2);
@@ -319,8 +350,9 @@ function hitButton(player, button) {
     escada.create(600, 550, "escada").setScale(0.8).refreshBody();
     escada.create(780, 500, "escada").setScale(0.8).refreshBody();
     escada.create(940, 433, "escada").setScale(0.8).refreshBody();
-    chegada.create(940, 385, "chegada").refreshBody();
     chegada.create(940, 269, "chegada").refreshBody();
+    chegada.create(940, 609, "chegada").refreshBody();
+    criarChegada = true;
   }
 }
 
